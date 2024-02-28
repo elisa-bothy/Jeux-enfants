@@ -1,0 +1,5 @@
+hôte = "wp.ldnr.fr"
+port du serveur de DB = "3306"
+nom de la DB = "cda202302_g1"
+login = "cda202302_g1"
+mot de passe = "0m2Y8FqwXiBgvwLY"
