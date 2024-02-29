@@ -33,8 +33,8 @@ public class QuestionFrame extends JFrame {
         //creation des composants
         questRepPanel = new JPanel();
         btnPanel = new JPanel();
-        questLabel = new JLabel("Question Label");
-        repText = new JTextField(25);
+        questLabel = new JLabel("Comment s'appelle la fée de Peter Pan ?");
+        repText = new JTextField(255);
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
         repText.setBorder(border);
         verif = new JButton("VERIFIER");
