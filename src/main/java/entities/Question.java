@@ -6,7 +6,6 @@ package entities;
 
 import java.util.ArrayList;
 
-
 /**
  *
  * @author Valentina Sarais

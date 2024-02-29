@@ -9,8 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -66,5 +67,80 @@ public class QuestionDao {
         return objR;
     }
     
+    public Question readRandomQuestion() {
+        Question randomQuestion = null;
+        String sql = "SELECT * FROM question";
+        PreparedStatement pstmt;
 
+        try {
+            pstmt = connection.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            List<Question> questionList = new ArrayList<>();
+
+            // Récupérer toutes les questions de la base de données
+            while (rs.next()) {
+                Question question = new Question();
+                question.setId_question(rs.getInt("id_question"));
+                question.setEnonce(rs.getString("enonce"));
+                question.setReponse(rs.getString("reponse"));
+                questionList.add(question);
+            }
+
+            // Choisir une question aléatoire
+            if (!questionList.isEmpty()) {
+                Random random = new Random();
+                int index = random.nextInt(questionList.size());
+                randomQuestion = questionList.get(index);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Erreur lors de la lecture d'une question aléatoire : " + ex.getMessage());
+        }
+        
+        return randomQuestion;
+    }
+    
+    public Question getQuestionByEnonce(String enonce) {
+    Question question = null;
+    String sql = "SELECT * FROM question WHERE enonce = ?";
+    try {
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        pstmt.setString(1, enonce);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            question = new Question();
+            question.setId_question(rs.getInt("id_question"));
+            question.setEnonce(rs.getString("enonce"));
+            question.setReponse(rs.getString("reponse"));
+        }
+    } catch (SQLException ex) {
+        System.out.println("Erreur lors de la récupération de la question par énoncé : " + ex.getMessage());
+    }
+    return question;
 }
+ public boolean verifierReponseUtilisateur(int idQuestion, String reponseUtilisateur) {
+    boolean reponseCorrecte = false;
+    String sql = "SELECT reponse FROM question WHERE id_question = ?";
+    try {
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        pstmt.setInt(1, idQuestion);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            String reponseCorrecteDB = rs.getString("reponse");
+            reponseCorrecteDB = reponseCorrecteDB.trim(); // Supprimer les espaces en début et fin de chaîne
+            reponseUtilisateur = reponseUtilisateur.trim();
+            // Vérifier si la réponse de l'utilisateur correspond à la réponse correcte (insensible à la casse)
+            reponseCorrecte = reponseCorrecteDB.equalsIgnoreCase(reponseUtilisateur);
+        }
+    } catch (SQLException ex) {
+        System.out.println("Erreur lors de la vérification de la réponse de l'utilisateur : " + ex.getMessage());
+    }
+    return reponseCorrecte;
+}
+
+
+    
+}
+
+

@@ -4,8 +4,6 @@
  */
 package main;
 
-import dao.QuestionDao;
-import entities.Question;
 import graphics.QuestionFrame;
 
 /**
@@ -16,15 +14,11 @@ public class MainQuestion {
     
     public static void main(String[] args) {
         
-        //QuestionFrame questJeu = new QuestionFrame();
+        QuestionFrame questJeu = new QuestionFrame();
        
-        QuestionDao QDao = new QuestionDao();
-        Question q = QDao.readEnonce(1);
-        System.out.println(q);
         
-        QuestionDao RDao = new QuestionDao();
-        Question r = QDao.readReponse(1);
-        System.out.println(r);
+        
+
        
     }
     
