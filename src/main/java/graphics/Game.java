@@ -4,9 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -46,7 +52,7 @@ public class Game extends JFrame {
         question.addTab("Le Savez vous ?", jpQuestion);  
         administration.addTab("Administration", jpAdministration); 
         
-        creationCode();
+        lectureCode();
         initGui();
         initEvents();
         
@@ -87,20 +93,51 @@ public class Game extends JFrame {
                 );
             });
     }
-    //création du password dans un fichier
-    private void creationCode() {
-        DataOutputStream out;
- 
+    //création du password dans un fichier => FAIT dc supprimer
+
+    private void lectureCode() {
+        InputStream is = null;
+        InputStreamReader isr = null;
+        BufferedReader br = null;
         try {
-            out = new DataOutputStream(
-                    new BufferedOutputStream(
-                        new FileOutputStream("code.dat")));
-            out.writeUTF("password");
-            out.close();
-        } catch (IOException ioe) {
-            System.err.println(ioe);
-            System.exit(1);
+            is = Thread.currentThread()
+                    .getContextClassLoader()
+                    .getResourceAsStream("texts/code.dat");
+            isr = new InputStreamReader(is);
+            br = new BufferedReader(isr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("Fichier non trouvé : " + ex.getMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (isr != null) {
+                try {
+                    isr.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }
+    
     
 }
