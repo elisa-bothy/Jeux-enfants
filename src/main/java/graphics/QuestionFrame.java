@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -90,6 +91,15 @@ public class QuestionFrame extends JFrame {
         verif.addActionListener((ActionEvent e) -> {
             verifierReponse();
         });
+
+        solut.addActionListener((ActionEvent e) -> {
+            afficherSolution();
+        });
+
+        autreQuest.addActionListener((ActionEvent e) -> {
+            afficherQuestRandom();
+        });
+
     }
 
     private void afficherQuestRandom() {
@@ -120,6 +130,20 @@ public class QuestionFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Mauvaise réponse !");
         }
     }
+
+    private void afficherSolution() {
+        // Récupérer la question aléatoire en cours
+        String enonceQuestion = questLabel.getText();
+
+        // Récupérer la question complète (y compris la réponse) associée à l'énoncé de la question aléatoire
+        Question questionAvecReponse = questRandom.getQuestionByEnonce(enonceQuestion);
+
+        // Afficher la réponse correcte dans une boîte de dialogue
+        if (questionAvecReponse != null) {
+            String reponseCorrecte = questionAvecReponse.getReponse();
+            JOptionPane.showMessageDialog(this, "La réponse correcte est : " + reponseCorrecte, "Solution", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Impossible de récupérer la réponse correcte.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
-
-

@@ -139,6 +139,22 @@ public class QuestionDao {
     return reponseCorrecte;
 }
 
+/* public String trouverSolution(String enonce) {
+    String solution = null;
+    String sql = "SELECT reponse FROM question WHERE enonce = ?";
+    try {
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        pstmt.setString(1, enonce);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            solution = rs.getString("reponse");
+        }
+    } catch (SQLException ex) {
+        System.out.println("Erreur lors de l'affichage de la solution : " + ex.getMessage());
+    }
+    return solution;
+}*/
+
 
     
 }
