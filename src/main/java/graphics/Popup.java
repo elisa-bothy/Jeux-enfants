@@ -5,10 +5,22 @@
 
 package graphics;
 
+import java.awt.Dimension;
+import java.awt.Font;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Le J c'est le S
  */
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 public class Popup {
-    
+    private static final ImageIcon herbert = new ImageIcon(Game.class.getResource("/images/herbert.png"));
+
+    public static void afficherMessage(String message, String title, int messageType) {
+       JOptionPane.showMessageDialog(null, message, title, messageType, herbert);
+    }
 }

@@ -66,20 +66,18 @@ public class CalculFrame extends JFrame{
             });
                 
             res.getJbverification().addActionListener((ae) -> {
-                System.out.println("Solution: " + res.getJlsolution().getText());
-                System.out.println("Proposition: " + res.getJtreponse().getText());
                 if (comparaison() == true){
-                    JOptionPane.showMessageDialog(null,"VRAI BRAVOS !");
-                    System.out.println("OUI");}
-                else {JOptionPane.showMessageDialog(null, "T'ES NUL !");
-                    System.out.println("NON");}
+                    Popup.afficherMessage("Bravo Jeune Padawan !", "Vérification", HEIGHT);}
+
+                else {Popup.afficherMessage("Ce n'est pas ça essaie encore", "Vérification", HEIGHT);
+                   }
             });
-            
+
             res.getJbsolution().addActionListener((ae) -> {
-                //res.getJlsolution().setVisible(true);
-                String text = res.getJlsolution().getText();
-                JOptionPane.showMessageDialog(null, text);
+                String text = "La solution de " + calcul.equation.getText() + " est " + res.getJlsolution().getText();
+                Popup.afficherMessage(text, "La solution", JOptionPane.INFORMATION_MESSAGE);
             });
+
         }
         
         
