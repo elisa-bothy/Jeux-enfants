@@ -131,12 +131,16 @@ public class QuestionFrame extends JPanel {
 
         // Vérifier si la réponse de l'utilisateur est correcte
         boolean reponseCorrecte = questRandom.verifierReponseUtilisateur(question.getId_question(), reponseUtilisateur);
-
+        
+        // Création du pop-up 
+        
+        Popup popup = new Popup();
+        
         // Afficher un message à l'utilisateur en fonction du résultat de la vérification
         if (reponseCorrecte) {
-            JOptionPane.showMessageDialog(this, "Bonne réponse !");
+            popup.afficherMessage("Bonne réponse !", "Vérification", HEIGHT);
         } else {
-            JOptionPane.showMessageDialog(this, "Mauvaise réponse !");
+            popup.afficherMessage("Mauvaise réponse !", "Vérification", HEIGHT);
         }
     }
 
@@ -146,13 +150,14 @@ public class QuestionFrame extends JPanel {
 
         // Récupérer la question complète (y compris la réponse) associée à l'énoncé de la question aléatoire
         Question questionAvecReponse = questRandom.getQuestionByEnonce(enonceQuestion);
-
+        Popup popup = new Popup();
         // Afficher la réponse correcte dans une boîte de dialogue
         if (questionAvecReponse != null) {
+            
             String reponseCorrecte = questionAvecReponse.getReponse();
-            JOptionPane.showMessageDialog(this, "La réponse correcte est : " + reponseCorrecte, "Solution", JOptionPane.INFORMATION_MESSAGE);
+            popup.afficherMessage("La réponse correcte est : " + reponseCorrecte, "Solution", HEIGHT);
         } else {
-            JOptionPane.showMessageDialog(this, "Impossible de récupérer la réponse correcte.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            popup.afficherMessage("Impossible de récupérer la réponse correcte.", "Erreur", HEIGHT);
         }
     }
 }
