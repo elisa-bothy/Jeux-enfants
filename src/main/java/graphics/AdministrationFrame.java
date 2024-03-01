@@ -4,11 +4,15 @@
  */
 package graphics;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -20,12 +24,14 @@ import javax.swing.JTextField;
 public class AdministrationFrame extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    JLabel welcome;
     JPanel radios;
     JRadioButton jrb1;
     JRadioButton jrb2;
     ButtonGroup niveaux;
     JButton modification;
     JButton creation;
+    JButton supprimer;
     JButton enregistrer;
     JButton modifier;
     JComboBox jcb;
@@ -36,6 +42,7 @@ public class AdministrationFrame extends JPanel {
         };
 
     public AdministrationFrame() {
+        welcome = new JLabel();
         // Boutons radio
         radios = new JPanel();
         jrb1 = new JRadioButton("niveau 1");
@@ -49,6 +56,7 @@ public class AdministrationFrame extends JPanel {
         //question choisi dans liste déroulante
         question = new JTextField();
         enregistrer = new JButton("Enregistrer");
+        supprimer = new JButton("Supprimer");
         modifier = new JButton("Modifier");
         
         initGui();// Créer l'interface de JPanel
@@ -62,6 +70,7 @@ public class AdministrationFrame extends JPanel {
         radios.add(jrb1);
         radios.add(jrb2);
         this.add(radios);
+        this.add(supprimer);
         this.add(modification);
         this.add(creation);
         this.add(jcb);
@@ -76,6 +85,7 @@ public class AdministrationFrame extends JPanel {
         enregistrer.setVisible(false);
         modifier.setVisible(false);
         modification.addActionListener((ActionEvent ae) -> {
+            supprimer.setVisible(false);
             radios.setVisible(false);
             modification.setVisible(false);
             creation.setVisible(false);
@@ -84,13 +94,18 @@ public class AdministrationFrame extends JPanel {
             question.setVisible(true);
         });
         creation.addActionListener((ActionEvent ae) -> {
+            supprimer.setVisible(false);
             radios.setVisible(false);
             modification.setVisible(false);
             creation.setVisible(false);
             enregistrer.setVisible(true);
             question.setVisible(true);
         });
+        supprimer.addActionListener((ActionEvent ae) -> {
+            
+        });
         modifier.addActionListener((ActionEvent ae) -> {
+            supprimer.setVisible(true);
             radios.setVisible(true);
             modification.setVisible(true);
             creation.setVisible(true);
@@ -99,6 +114,7 @@ public class AdministrationFrame extends JPanel {
             question.setVisible(false);
         });
         enregistrer.addActionListener((ActionEvent ae) -> {
+            supprimer.setVisible(true);
             radios.setVisible(true);
             modification.setVisible(true);
             creation.setVisible(true);

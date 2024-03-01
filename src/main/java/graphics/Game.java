@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -40,7 +39,7 @@ public class Game extends JFrame implements ActionListener{
     AccueilFrame jpAccueil;
     JPanel jpCalcul;
     QuestionFrame jpQuestion;
-    JPanel jpTabGraphique;
+    ArdoiseFrame jpTabGraphique;
     AdministrationFrame jpAdministration;//pas visible tant que le code donné n'est pas le bon
     
     public Game(){
@@ -48,7 +47,7 @@ public class Game extends JFrame implements ActionListener{
         jpAccueil = new AccueilFrame();
         jpCalcul = new JPanel();
         jpQuestion = new QuestionFrame();
-        jpTabGraphique = new JPanel();
+        jpTabGraphique = new ArdoiseFrame();
         jpAdministration = new AdministrationFrame();
         connexion = new JButton("Connectez vous");
         

@@ -3,6 +3,7 @@ package graphics;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -11,31 +12,26 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class ArdoiseFrame extends JFrame {
+public class ArdoiseFrame extends JPanel {
+
+    private static final long serialVersionUID = 1L;
 
     int x = 0, y = 0;
-    private final JPanel container;
-    private final JLabel label;
-    private final JPanel dessin;
-    private final JPanel colorPanel;
-    private final JButton clearButton;
-    private Color currentColor = Color.BLACK; // Couleur actuelle pour dessiner
+
+    JPanel dessin;
+    JPanel colorPanel;
+    JButton clearButton;
+    Color currentColor = Color.BLACK; // Couleur actuelle pour dessiner
 
     public ArdoiseFrame() {
 
-        this.label = new JLabel();
-        this.dessin = new JPanel();
-        this.container = new JPanel();
-        this.colorPanel = new JPanel();
-        this.clearButton = new JButton("");
-        //icone du bouton clear
-        clearButton.setIcon(new ImageIcon("limpar-limpo.png"));
+        dessin = new JPanel();
+        colorPanel = new JPanel();
+        clearButton = new JButton(new ImageIcon("limpar-limpo.png"));//icone du bouton clear
 
-        
         // param pour dessiner
         dessin.setBackground(Color.white);
         dessin.addMouseListener(new MouseAdapter() {
@@ -55,12 +51,6 @@ public class ArdoiseFrame extends JFrame {
                 y = e.getY();
             }
         });
-        // position des éléments
-        container.setLayout(new BorderLayout());
-        container.add(label, BorderLayout.SOUTH);
-        container.add(colorPanel, BorderLayout.EAST);
-        container.add(clearButton, BorderLayout.WEST);
-        container.add(dessin, BorderLayout.CENTER);
 
         // Config Panel de couleur
         colorPanel.setLayout(new BoxLayout(colorPanel, BoxLayout.Y_AXIS));
@@ -71,18 +61,18 @@ public class ArdoiseFrame extends JFrame {
         colorPanel.add(createColorButton(Color.BLACK));
         colorPanel.add(createColorButton(Color.GRAY));
 
+        // position des éléments
+        this.setLayout(new BorderLayout());
+        this.add(colorPanel, BorderLayout.EAST);
+        this.add(clearButton, BorderLayout.WEST);
+        this.add(dessin, BorderLayout.CENTER);
 
         // Ajoute un ActionListener au bouton Effacer
         clearButton.addActionListener((ActionEvent e) -> {
             clearDrawing();
         });
-        // paramètre de la fenêtre
-        this.setSize(1080, 720);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
-        this.setContentPane(container);
-        this.setVisible(true);
     }
+
     // Pour effacer le dessin
     private void clearDrawing() {
         Graphics g = dessin.getGraphics();
@@ -103,9 +93,4 @@ public class ArdoiseFrame extends JFrame {
         });
         return button;
     }
-
-    public static void main(String[] args) {
-        new ArdoiseFrame();
-    }
-
 }
