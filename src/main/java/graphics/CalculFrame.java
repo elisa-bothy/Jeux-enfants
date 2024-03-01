@@ -7,24 +7,22 @@ package graphics;
 
 
 import entities.Calcul;
-
 import java.awt.BorderLayout;
 import java.awt.Container;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Le J c'est le S
  */
-public class CalculFrame extends JFrame{
+public class CalculFrame extends JPanel{
     
-    private CalculPanel calcul;
-    private ResultatPanel res;
+    private final CalculPanel calcul;
+    private final ResultatPanel res;
 
     // CREATION DE LA FENETRE --------------------------------------------------
     public CalculFrame() {
-        super("CALCULONS");
 
         // Ajouter les panels secondaires 
         calcul = new CalculPanel();
@@ -32,26 +30,20 @@ public class CalculFrame extends JFrame{
         
         // Ajouter à la frame les Jpanel
         
-        add(calcul);
-        add(res);
+        this.add(calcul);
+        this.add(res);
         
         // Ajuster les blocs entre eux 
 
         initGui();
         events();
         
-        // Laisser la fenêttre s'auto-dimensionner par rapport à son contenu
-        this.pack();
-        this.setLocationRelativeTo(null);
-        // Indiquer le comportement de la fenêtre à la fermeture
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        // Afficher la fenêtre
-        this.setVisible(true);
+        
     } // -----------------------------------------------------------------------
     
         // RANGER LES BOITES 
         private void initGui() {
-        Container contentPane = this.getContentPane();
+        Container contentPane = this;
         contentPane.setLayout(new BorderLayout());
         
         contentPane.add(res, BorderLayout.CENTER);
@@ -97,8 +89,7 @@ public class CalculFrame extends JFrame{
           
            // genérer une équation aléatoire 
            int d;
-           String equa;
-           if (operande == "+"){
+           if ("+".equals(operande)){
                d = a + b;
               
             } else {

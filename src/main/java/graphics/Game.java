@@ -37,7 +37,7 @@ public class Game extends JFrame implements ActionListener{
     JButton connexion;//pour se connecter à l'administratif
     JTabbedPane tabbedPane;
     AccueilFrame jpAccueil;
-    JPanel jpCalcul;
+    CalculFrame jpCalcul;
     QuestionFrame jpQuestion;
     ArdoiseFrame jpTabGraphique;
     AdministrationFrame jpAdministration;//pas visible tant que le code donné n'est pas le bon
@@ -45,7 +45,7 @@ public class Game extends JFrame implements ActionListener{
     public Game(){
         south = new JPanel();
         jpAccueil = new AccueilFrame();
-        jpCalcul = new JPanel();
+        jpCalcul = new CalculFrame();
         jpQuestion = new QuestionFrame();
         jpTabGraphique = new ArdoiseFrame();
         jpAdministration = new AdministrationFrame();
