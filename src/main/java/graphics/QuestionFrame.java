@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -40,7 +41,22 @@ public class QuestionFrame extends JPanel {
         questRepPanel = new JPanel();
         btnPanel = new JPanel();
         questLabel = new JLabel("Comment s'appelle la fée de Peter Pan ?");
+        //je set la taille de mon questLabel
+        questLabel.setMaximumSize(new Dimension(500, Integer.MAX_VALUE));
+        questLabel.setBackground(new Color(72, 181, 163));
+        //changement police
+        // Création d'une nouvelle police 
+        Font nouvellePoliceQuestion = new Font(questLabel.getFont().getName(), Font.BOLD, 25);
+        // Définition de la nouvelle police pour le JLabel
+        questLabel.setFont(nouvellePoliceQuestion);
+        
         repText = new JTextField(255);
+        // je change le font de mon text
+        Font nouvellePolice = new Font(repText.getFont().getName(), Font.PLAIN, 46);
+        // Définition de la nouvelle police pour le JTextField
+        repText.setFont(nouvellePolice);
+        repText.setForeground(new Color(4, 62, 76));
+
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
         repText.setBorder(border);
         verif = new JButton("VERIFIER");
