@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -40,7 +41,22 @@ public class QuestionFrame extends JPanel {
         questRepPanel = new JPanel();
         btnPanel = new JPanel();
         questLabel = new JLabel("Comment s'appelle la fée de Peter Pan ?");
+        //je set la taille de mon questLabel
+        questLabel.setMaximumSize(new Dimension(500, Integer.MAX_VALUE));
+        questLabel.setForeground(new Color(72, 181, 163));
+        //changement police
+        // Création d'une nouvelle police 
+        Font nouvellePoliceQuestion = new Font(questLabel.getFont().getName(), Font.BOLD, 25);
+        // Définition de la nouvelle police pour le JLabel
+        questLabel.setFont(nouvellePoliceQuestion);
+        
         repText = new JTextField(255);
+        // je change le font de mon text
+        Font nouvellePolice = new Font(repText.getFont().getName(), Font.PLAIN, 46);
+        // Définition de la nouvelle police pour le JTextField
+        repText.setFont(nouvellePolice);
+        repText.setForeground(new Color(117, 137, 191));
+
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
         repText.setBorder(border);
         verif = new JButton("VERIFIER");
@@ -115,12 +131,16 @@ public class QuestionFrame extends JPanel {
 
         // Vérifier si la réponse de l'utilisateur est correcte
         boolean reponseCorrecte = questRandom.verifierReponseUtilisateur(question.getId_question(), reponseUtilisateur);
-
+        
+        // Création du pop-up 
+        
+        Popup popup = new Popup();
+        
         // Afficher un message à l'utilisateur en fonction du résultat de la vérification
         if (reponseCorrecte) {
-            JOptionPane.showMessageDialog(this, "Bonne réponse !");
+            popup.afficherMessage("Bonne réponse !", "Vérification", HEIGHT);
         } else {
-            JOptionPane.showMessageDialog(this, "Mauvaise réponse !");
+            popup.afficherMessage("Mauvaise réponse !", "Vérification", HEIGHT);
         }
     }
 
@@ -130,13 +150,14 @@ public class QuestionFrame extends JPanel {
 
         // Récupérer la question complète (y compris la réponse) associée à l'énoncé de la question aléatoire
         Question questionAvecReponse = questRandom.getQuestionByEnonce(enonceQuestion);
-
+        Popup popup = new Popup();
         // Afficher la réponse correcte dans une boîte de dialogue
         if (questionAvecReponse != null) {
+            
             String reponseCorrecte = questionAvecReponse.getReponse();
-            JOptionPane.showMessageDialog(this, "La réponse correcte est : " + reponseCorrecte, "Solution", JOptionPane.INFORMATION_MESSAGE);
+            popup.afficherMessage("La réponse correcte est : " + reponseCorrecte, "Solution", HEIGHT);
         } else {
-            JOptionPane.showMessageDialog(this, "Impossible de récupérer la réponse correcte.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            popup.afficherMessage("Impossible de récupérer la réponse correcte.", "Erreur", HEIGHT);
         }
     }
 }
