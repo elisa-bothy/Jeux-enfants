@@ -43,7 +43,7 @@ public class QuestionFrame extends JPanel {
         questLabel = new JLabel("Comment s'appelle la fée de Peter Pan ?");
         //je set la taille de mon questLabel
         questLabel.setMaximumSize(new Dimension(500, Integer.MAX_VALUE));
-        questLabel.setBackground(new Color(72, 181, 163));
+        questLabel.setForeground(new Color(72, 181, 163));
         //changement police
         // Création d'une nouvelle police 
         Font nouvellePoliceQuestion = new Font(questLabel.getFont().getName(), Font.BOLD, 25);
@@ -55,7 +55,7 @@ public class QuestionFrame extends JPanel {
         Font nouvellePolice = new Font(repText.getFont().getName(), Font.PLAIN, 46);
         // Définition de la nouvelle police pour le JTextField
         repText.setFont(nouvellePolice);
-        repText.setForeground(new Color(4, 62, 76));
+        repText.setForeground(new Color(117, 137, 191));
 
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
         repText.setBorder(border);
