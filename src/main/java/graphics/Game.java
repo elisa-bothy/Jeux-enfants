@@ -110,7 +110,7 @@ public class Game extends JFrame implements ActionListener{
         );
         question.setAccelerator(
                 KeyStroke.getKeyStroke(
-                        KeyEvent.VK_L, 
+                        KeyEvent.VK_S, 
                         InputEvent.CTRL_DOWN_MASK
                 )
         );
