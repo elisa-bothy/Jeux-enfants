@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,22 +26,17 @@ public class ArdoiseFrame extends JFrame {
     private Color currentColor = Color.BLACK; // Couleur actuelle pour dessiner
 
     public ArdoiseFrame() {
-        super("* ARDOISE MAGIQUE *");
+
         this.label = new JLabel();
         this.dessin = new JPanel();
         this.container = new JPanel();
         this.colorPanel = new JPanel();
         this.clearButton = new JButton("");
-        //icone du bouton effacer
+        //icone du bouton clear
         clearButton.setIcon(new ImageIcon("limpar-limpo.png"));
 
-        // Charger l'icône à partir d'un fichier
-        ImageIcon icon = new ImageIcon("dessin.png");
-
-        // Obtenir l'image de l'icône
-        Image image = icon.getImage();
         
-
+        // param pour dessiner
         dessin.setBackground(Color.white);
         dessin.addMouseListener(new MouseAdapter() {
             @Override
@@ -61,9 +55,12 @@ public class ArdoiseFrame extends JFrame {
                 y = e.getY();
             }
         });
-
+        // position des éléments
         container.setLayout(new BorderLayout());
         container.add(label, BorderLayout.SOUTH);
+        container.add(colorPanel, BorderLayout.EAST);
+        container.add(clearButton, BorderLayout.WEST);
+        container.add(dessin, BorderLayout.CENTER);
 
         // Config Panel de couleur
         colorPanel.setLayout(new BoxLayout(colorPanel, BoxLayout.Y_AXIS));
@@ -74,25 +71,20 @@ public class ArdoiseFrame extends JFrame {
         colorPanel.add(createColorButton(Color.BLACK));
         colorPanel.add(createColorButton(Color.GRAY));
 
-        container.add(colorPanel, BorderLayout.EAST);
-        container.add(clearButton, BorderLayout.WEST);
-        container.add(dessin, BorderLayout.CENTER);
 
         // Ajoute un ActionListener au bouton Effacer
         clearButton.addActionListener((ActionEvent e) -> {
             clearDrawing();
         });
-
+        // paramètre de la fenêtre
         this.setSize(1080, 720);
-        this.setIconImage(image);
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setContentPane(container);
         this.setVisible(true);
     }
     // Pour effacer le dessin
-private void clearDrawing() {
+    private void clearDrawing() {
         Graphics g = dessin.getGraphics();
         g.setColor(dessin.getBackground());
         g.fillRect(0, 0, dessin.getWidth(), dessin.getHeight());
