@@ -5,6 +5,7 @@
 
 package main;
 
+import entities.Calcul;
 import graphics.CalculFrame;
 
 /**
@@ -15,7 +16,12 @@ import graphics.CalculFrame;
 public class MainCalcul {
     
         public static void main(String[] args) {
-CalculFrame frame = new CalculFrame();
+            // génère la partie graphique 
+            CalculFrame frame = new CalculFrame();
+            // test de la fonction aléatoire 
+            Calcul calcul = new Calcul();
+            System.out.println(calcul.nombreAleatoire());
+            System.out.println(calcul.equationAleatoire());
 }  
     }
 
