@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -46,7 +47,7 @@ public class QuestionDao {
         return objQ;
     }
     
-    public Question readReponse(Integer id) {
+    public Question readReponses(Integer id) {
         Question objR = null;
         String sql = "SELECT * FROM question WHERE id_question=?";
         PreparedStatement pstmt;
@@ -154,6 +155,40 @@ public class QuestionDao {
     }
     return solution;
 }*/
+  public int count(){
+        int count = 0;
+        String sql = "SELECT COUNT(*) AS c FROM person";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.first()){
+                count = rs.getInt("c");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erreur lors du comptage :" + ex.getMessage());
+        }
+        return count;
+    }
+    
+    public Collection<Question> list(){
+        ArrayList<Person> list = new ArrayList<>();
+        String sql = "SELECT * FROM person";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                Person p = new Person();
+                p.setId_person(rs.getInt("id_person"));
+                p.setLogin(rs.getString("login"));
+                p.setPwd(rs.getString("pwd"));
+                p.setId_role(rs.getLong("id_role"));
+                list.add(p);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erreur lors du listage :" + ex.getMessage());
+        }
+        return list;
+    }
 
 
     

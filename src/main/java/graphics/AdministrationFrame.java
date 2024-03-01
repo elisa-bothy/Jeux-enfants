@@ -4,6 +4,7 @@
  */
 package graphics;
 
+import entities.Question;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import javax.swing.ButtonGroup;
@@ -56,6 +57,7 @@ public class AdministrationFrame extends JPanel {
         supprimer = new JButton("Supprimer");
         modifier = new JButton("Modifier");
         
+        database();
         initGui();// Créer l'interface de JPanel
         initEvents();
         
@@ -128,6 +130,10 @@ public class AdministrationFrame extends JPanel {
                         .getSelectedItem());
             }
         });
+    }
+
+    private void database() {
+        Question[] questions = readResponses
     }
     
 }
