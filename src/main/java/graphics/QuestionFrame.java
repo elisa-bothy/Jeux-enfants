@@ -89,6 +89,7 @@ public class QuestionFrame extends JPanel {
         });
 
         autreQuest.addActionListener((ActionEvent e) -> {
+            repText.setText("");
             afficherQuestRandom();
         });
 

@@ -125,15 +125,15 @@ public class QuestionDao {
 
       public Question read(Integer id) {
         Question objQ = null;
-        String sql = "SELECT * FROM person WHERE id_person=?";
+        String sql = "SELECT * FROM question WHERE id_question=?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.first()) {
                 objQ = new Question();
-                objQ.setId_question(rs.getInt("id_person"));
-                objQ.setEnonce(rs.getString("login"));
-                objQ.setReponse(rs.getString("pwd"));
+                objQ.setId_question(rs.getInt("id_question"));
+                objQ.setEnonce(rs.getString("enonce"));
+                objQ.setReponse(rs.getString("reponse"));
  
             }
         } catch (SQLException ex) {
