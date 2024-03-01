@@ -89,6 +89,7 @@ public class QuestionFrame extends JPanel {
         });
 
         autreQuest.addActionListener((ActionEvent e) -> {
+            repText.setText("");
             afficherQuestRandom();
         });
 
@@ -103,10 +104,10 @@ public class QuestionFrame extends JPanel {
     }
 
     private void verifierReponse() {
-        // Récupérer la réponse saisie par l'utilisateur
+        //recup la réponse saisie par l'utilisateur
         String reponseUtilisateur = repText.getText();
 
-        // Récupérer la question actuelle affichée dans le libellé
+        // Récup question actuelle affichée dans le label
         String enonceQuestion = questLabel.getText();
 
         // Récupérer la question correspondant à l'énoncé depuis la base de données

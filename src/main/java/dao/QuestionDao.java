@@ -98,66 +98,56 @@ public class QuestionDao {
         } catch (SQLException ex) {
             System.out.println("Erreur lors de la lecture d'une question aléatoire : " + ex.getMessage());
         }
-        
+
         return randomQuestion;
     }
-    
-    public Question getQuestionByEnonce(String enonce) {
-    Question question = null;
-    String sql = "SELECT * FROM question WHERE enonce = ?";
-    try {
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setString(1, enonce);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            question = new Question();
-            question.setId_question(rs.getInt("id_question"));
-            question.setEnonce(rs.getString("enonce"));
-            question.setReponse(rs.getString("reponse"));
-        }
-    } catch (SQLException ex) {
-        System.out.println("Erreur lors de la récupération de la question par énoncé : " + ex.getMessage());
-    }
-    return question;
-}
- public boolean verifierReponseUtilisateur(int idQuestion, String reponseUtilisateur) {
-    boolean reponseCorrecte = false;
-    String sql = "SELECT reponse FROM question WHERE id_question = ?";
-    try {
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setInt(1, idQuestion);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            String reponseCorrecteDB = rs.getString("reponse");
-            reponseCorrecteDB = reponseCorrecteDB.trim(); // Supprimer les espaces en début et fin de chaîne
-            reponseUtilisateur = reponseUtilisateur.trim();
-            // Vérifier si la réponse de l'utilisateur correspond à la réponse correcte (insensible à la casse)
-            reponseCorrecte = reponseCorrecteDB.equalsIgnoreCase(reponseUtilisateur);
-        }
-    } catch (SQLException ex) {
-        System.out.println("Erreur lors de la vérification de la réponse de l'utilisateur : " + ex.getMessage());
-    }
-    return reponseCorrecte;
-}
 
-/* public String trouverSolution(String enonce) {
-    String solution = null;
-    String sql = "SELECT reponse FROM question WHERE enonce = ?";
-    try {
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setString(1, enonce);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            solution = rs.getString("reponse");
+    public Question getQuestionByEnonce(String enonce) {
+        Question question = null;
+        String sql = "SELECT * FROM question WHERE enonce = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, enonce);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                question = new Question();
+                question.setId_question(rs.getInt("id_question"));
+                question.setEnonce(rs.getString("enonce"));
+                question.setReponse(rs.getString("reponse"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erreur lors de la récupération de la question par énoncé : " + ex.getMessage());
         }
-    } catch (SQLException ex) {
-        System.out.println("Erreur lors de l'affichage de la solution : " + ex.getMessage());
+        return question;
     }
-    return solution;
-}*/
+
+    public boolean verifierReponseUtilisateur(int idQuestion, String reponseUtilisateur) {
+        boolean reponseCorrecte = false;
+        String sql = "SELECT reponse FROM question WHERE id_question = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, idQuestion);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String reponseCorrecteDB = rs.getString("reponse");
+                // Supprimer les espaces en début et fin de chaîne
+                reponseCorrecteDB = reponseCorrecteDB.trim();
+                reponseUtilisateur = reponseUtilisateur.trim();
+                // Vérifier si la réponse de l'utilisateur correspond à la réponse correcte 
+                //(insensible à la casse)
+                reponseCorrecte = reponseCorrecteDB.equalsIgnoreCase(reponseUtilisateur);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erreur lors de la vérification de la réponse de l'utilisateur : " + ex.getMessage());
+        }
+        return reponseCorrecte;
+    }
+
+   
+
   public int count(){
         int count = 0;
-        String sql = "SELECT COUNT(*) AS c FROM person";
+        String sql = "SELECT COUNT(*) AS c FROM question";
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
@@ -171,18 +161,17 @@ public class QuestionDao {
     }
     
     public Collection<Question> list(){
-        ArrayList<Person> list = new ArrayList<>();
-        String sql = "SELECT * FROM person";
+        ArrayList<Question> list = new ArrayList<>();
+        String sql = "SELECT * FROM question";
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()){
-                Person p = new Person();
-                p.setId_person(rs.getInt("id_person"));
-                p.setLogin(rs.getString("login"));
-                p.setPwd(rs.getString("pwd"));
-                p.setId_role(rs.getLong("id_role"));
-                list.add(p);
+                Question q = new Question();
+                q.setId_question(rs.getInt("id_question"));
+                q.setEnonce(rs.getString("enonce"));
+                q.setReponse(rs.getString("reponse"));
+                list.add(q);
             }
         } catch (SQLException ex) {
             System.out.println("Erreur lors du listage :" + ex.getMessage());
@@ -191,7 +180,70 @@ public class QuestionDao {
     }
 
 
+     /************** CRUD pour l'admin
+     * @param enonce
+     * @param reponse *************/
     
+    //l'admin peut ajouter des nouvelles questions-reponse sur la BDD 
+    public void create(String enonce, String reponse) {
+        String sql = "INSERT INTO question (enonce, reponse) " + "VALUES (?, ?)";
+        try {
+                PreparedStatement pstmt = connection
+                        .prepareStatement(
+                                sql, 
+                                PreparedStatement.RETURN_GENERATED_KEYS
+                        );
+            pstmt.setString(1, enonce);
+            pstmt.setString(2, reponse);
+            int nbLines = pstmt.executeUpdate();
+            if (nbLines == 1) {
+                ResultSet autoGeneratedKeys = pstmt.getGeneratedKeys();
+                autoGeneratedKeys.first();
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erreur lors de l'insertion : " + ex.getMessage());
+        }
+    }
+
+
+      public Question read(Integer id) {
+        Question objQ = null;
+        String sql = "SELECT * FROM question WHERE id_question=?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.first()) {
+                objQ = new Question();
+                objQ.setId_question(rs.getInt("id_question"));
+                objQ.setEnonce(rs.getString("enonce"));
+                objQ.setReponse(rs.getString("reponse"));
+ 
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erreur lors de la lecture : " + ex.getMessage());
+        }
+        return objQ;
+    }
+     
+     public void updateEnonce(Question objQ, String s) {
+        String sql = "UPDATE question SET enonce=? WHERE id_question=?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, s);
+            pstmt.setInt(2, objQ.getId_question());
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("Erreur lors de l'update : " + ex.getMessage());
+        }
+    }
+
+    public void delete(Integer id) {
+        String sql = "DELETE FROM question WHERE id_question=?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql);) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("Erreur lors du delete : " + ex.getMessage());
+        }
+    }
+
 }
-
-
