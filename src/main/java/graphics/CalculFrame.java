@@ -10,8 +10,8 @@ import entities.Calcul;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -60,10 +60,26 @@ public class CalculFrame extends JFrame{
         
         // GERER LES EVENTS
         private void events (){
-            res.jbautre.addActionListener((e) -> {
+            res.getJbautre().addActionListener((ae) -> {
                 getLabel();
+                res.getJlsolution().setVisible(false);
+            });
+                
+            res.getJbverification().addActionListener((ae) -> {
+                System.out.println("Solution: " + res.getJlsolution().getText());
+                System.out.println("Proposition: " + res.getJtreponse().getText());
+                if (comparaison() == true){
+                    JOptionPane.showMessageDialog(null,"VRAI BRAVOS !");
+                    System.out.println("OUI");}
+                else {JOptionPane.showMessageDialog(null, "T'ES NUL !");
+                    System.out.println("NON");}
+            });
+            
+            res.getJbsolution().addActionListener((ae) -> {
+                res.getJlsolution().setVisible(true);
             });
         }
+        
         
         // FONCTION SUPPORT ----------------------------------------------------        
             
@@ -96,7 +112,7 @@ public class CalculFrame extends JFrame{
            // Affectation Label equation (panel result label equation)
            calcul.equation.setText(calculation);
            // Affectation Label jlsolution dans le panel result 
-           res.jlsolution.setText(String.valueOf(d));
+           res.getJlsolution().setText(String.valueOf(d));
            }
             
         // Fonction de comparaison 
@@ -105,14 +121,10 @@ public class CalculFrame extends JFrame{
             int solution;
             int proposition;
 
-            solution = Integer.parseInt(res.jlsolution.getText());
-            proposition = Integer.parseInt(res.jtreponse.getText());
+            solution = Integer.parseInt(res.getJlsolution().getText().trim());
+            proposition = Integer.parseInt(res.getJtreponse().getText().trim());
 
-            if (solution != proposition) {
-                return false;
-            } else {
-                return true;
-            }
+        return solution == proposition;
         }
         
 }

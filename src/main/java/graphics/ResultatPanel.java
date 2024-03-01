@@ -18,11 +18,51 @@ import javax.swing.JTextField;
 public class ResultatPanel extends JPanel{
 
     private static final long serialVersionUID = 1L;
-    JLabel jlsolution;
-    JButton jbsolution;
-    JButton jbverification;
-    JButton jbautre;
-    JTextField jtreponse;
+    private JLabel jlsolution;
+    private JButton jbsolution;
+    private JButton jbverification;
+    private JButton jbautre;
+    private JTextField jtreponse;
+
+    public JLabel getJlsolution() {
+        return jlsolution;
+    }
+
+    public void setJlsolution(JLabel jlsolution) {
+        this.jlsolution = jlsolution;
+    }
+
+    public JButton getJbsolution() {
+        return jbsolution;
+    }
+
+    public void setJbsolution(JButton jbsolution) {
+        this.jbsolution = jbsolution;
+    }
+
+    public JButton getJbverification() {
+        return jbverification;
+    }
+
+    public void setJbverification(JButton jbverification) {
+        this.jbverification = jbverification;
+    }
+
+    public JButton getJbautre() {
+        return jbautre;
+    }
+
+    public void setJbautre(JButton jbautre) {
+        this.jbautre = jbautre;
+    }
+
+    public JTextField getJtreponse() {
+        return jtreponse;
+    }
+
+    public void setJtreponse(JTextField jtreponse) {
+        this.jtreponse = jtreponse;
+    }
 
     public ResultatPanel() {
         
@@ -38,6 +78,8 @@ public class ResultatPanel extends JPanel{
         add(jbverification, BorderLayout.WEST);
         add(jbautre, BorderLayout.EAST);
         add(jtreponse, BorderLayout.NORTH);
+        
+        jlsolution.setVisible(false);
     }
     
     
