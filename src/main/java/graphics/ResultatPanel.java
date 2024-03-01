@@ -6,6 +6,8 @@
 package graphics;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -69,7 +71,7 @@ public class ResultatPanel extends JPanel{
         jlsolution = new JLabel(" 2 ");
         jbsolution = new JButton("Solution");
         jbverification = new JButton("Verification");
-        jbautre = new JButton("Autre calcule");
+        jbautre = new JButton("Nouveau Calcul");
         jtreponse = new JTextField();
         
         setLayout(new BorderLayout());
@@ -79,7 +81,9 @@ public class ResultatPanel extends JPanel{
         add(jbautre, BorderLayout.EAST);
         add(jtreponse, BorderLayout.NORTH);
         
+        jtreponse.setPreferredSize(new Dimension(100,400));
         jlsolution.setVisible(false);
+        jtreponse.setFont(new Font("Bold", Font.BOLD, 200));
     }
     
     

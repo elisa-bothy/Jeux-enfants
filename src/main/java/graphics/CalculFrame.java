@@ -62,7 +62,7 @@ public class CalculFrame extends JFrame{
         private void events (){
             res.getJbautre().addActionListener((ae) -> {
                 getLabel();
-                res.getJlsolution().setVisible(false);
+                //res.getJlsolution().setVisible(false);
             });
                 
             res.getJbverification().addActionListener((ae) -> {
@@ -76,7 +76,9 @@ public class CalculFrame extends JFrame{
             });
             
             res.getJbsolution().addActionListener((ae) -> {
-                res.getJlsolution().setVisible(true);
+                //res.getJlsolution().setVisible(true);
+                String text = res.getJlsolution().getText();
+                JOptionPane.showMessageDialog(null, text);
             });
         }
         

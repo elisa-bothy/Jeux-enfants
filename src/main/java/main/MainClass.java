@@ -1,5 +1,6 @@
 package main;
 
+import graphics.CalculFrame;
 import graphics.Game;
 
 /**
@@ -9,6 +10,7 @@ import graphics.Game;
 public class MainClass {
 
     public static void main(String[] args) {
-        Game jeux = new Game();
+        //Game jeux = new Game();
+        CalculFrame math = new CalculFrame();
     }
 }
