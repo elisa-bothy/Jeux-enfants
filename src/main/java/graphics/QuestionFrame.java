@@ -111,10 +111,10 @@ public class QuestionFrame extends JFrame {
     }
 
     private void verifierReponse() {
-        // Récupérer la réponse saisie par l'utilisateur
+        //recup la réponse saisie par l'utilisateur
         String reponseUtilisateur = repText.getText();
 
-        // Récupérer la question actuelle affichée dans le libellé
+        // Récup question actuelle affichée dans le label
         String enonceQuestion = questLabel.getText();
 
         // Récupérer la question correspondant à l'énoncé depuis la base de données

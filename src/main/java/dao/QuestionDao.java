@@ -25,48 +25,6 @@ public class QuestionDao {
         connection = MariadbConnection.getInstance();
     }
 
-    public Question readEnonce(Integer id) {
-        Question objQ = null;
-        String sql = "SELECT * FROM question WHERE id_question=?";
-        PreparedStatement pstmt;
-
-        try {
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.first()) {
-                objQ = new Question();
-                objQ.setId_question(rs.getInt("id_question"));
-                objQ.setEnonce(rs.getString("enonce"));
-
-            }
-        } catch (SQLException ex) {
-            System.out.println("Erreur lors de la lecture question : " + ex.getMessage());
-        }
-        return objQ;
-    }
-    
-    public Question readReponse(Integer id) {
-        Question objR = null;
-        String sql = "SELECT * FROM question WHERE id_question=?";
-        PreparedStatement pstmt;
-
-        try {
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.first()) {
-                objR = new Question();
-                objR.setId_question(rs.getInt("id_question"));
-                objR.setReponse(rs.getString("reponse"));
-
-            }
-        } catch (SQLException ex) {
-            System.out.println("Erreur lors de la lecture reponse : " + ex.getMessage());
-        }
-        return objR;
-    }
-    
     public Question readRandomQuestion() {
         Question randomQuestion = null;
         String sql = "SELECT * FROM question";
@@ -97,66 +55,114 @@ public class QuestionDao {
         } catch (SQLException ex) {
             System.out.println("Erreur lors de la lecture d'une question aléatoire : " + ex.getMessage());
         }
-        
+
         return randomQuestion;
     }
-    
+
     public Question getQuestionByEnonce(String enonce) {
-    Question question = null;
-    String sql = "SELECT * FROM question WHERE enonce = ?";
-    try {
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setString(1, enonce);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            question = new Question();
-            question.setId_question(rs.getInt("id_question"));
-            question.setEnonce(rs.getString("enonce"));
-            question.setReponse(rs.getString("reponse"));
+        Question question = null;
+        String sql = "SELECT * FROM question WHERE enonce = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, enonce);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                question = new Question();
+                question.setId_question(rs.getInt("id_question"));
+                question.setEnonce(rs.getString("enonce"));
+                question.setReponse(rs.getString("reponse"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erreur lors de la récupération de la question par énoncé : " + ex.getMessage());
         }
-    } catch (SQLException ex) {
-        System.out.println("Erreur lors de la récupération de la question par énoncé : " + ex.getMessage());
+        return question;
     }
-    return question;
-}
- public boolean verifierReponseUtilisateur(int idQuestion, String reponseUtilisateur) {
-    boolean reponseCorrecte = false;
-    String sql = "SELECT reponse FROM question WHERE id_question = ?";
-    try {
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setInt(1, idQuestion);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            String reponseCorrecteDB = rs.getString("reponse");
-            reponseCorrecteDB = reponseCorrecteDB.trim(); // Supprimer les espaces en début et fin de chaîne
-            reponseUtilisateur = reponseUtilisateur.trim();
-            // Vérifier si la réponse de l'utilisateur correspond à la réponse correcte (insensible à la casse)
-            reponseCorrecte = reponseCorrecteDB.equalsIgnoreCase(reponseUtilisateur);
+
+    public boolean verifierReponseUtilisateur(int idQuestion, String reponseUtilisateur) {
+        boolean reponseCorrecte = false;
+        String sql = "SELECT reponse FROM question WHERE id_question = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, idQuestion);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String reponseCorrecteDB = rs.getString("reponse");
+                // Supprimer les espaces en début et fin de chaîne
+                reponseCorrecteDB = reponseCorrecteDB.trim();
+                reponseUtilisateur = reponseUtilisateur.trim();
+                // Vérifier si la réponse de l'utilisateur correspond à la réponse correcte 
+                //(insensible à la casse)
+                reponseCorrecte = reponseCorrecteDB.equalsIgnoreCase(reponseUtilisateur);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erreur lors de la vérification de la réponse de l'utilisateur : " + ex.getMessage());
         }
-    } catch (SQLException ex) {
-        System.out.println("Erreur lors de la vérification de la réponse de l'utilisateur : " + ex.getMessage());
+        return reponseCorrecte;
     }
-    return reponseCorrecte;
-}
 
-/* public String trouverSolution(String enonce) {
-    String solution = null;
-    String sql = "SELECT reponse FROM question WHERE enonce = ?";
-    try {
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setString(1, enonce);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            solution = rs.getString("reponse");
-        }
-    } catch (SQLException ex) {
-        System.out.println("Erreur lors de l'affichage de la solution : " + ex.getMessage());
-    }
-    return solution;
-}*/
-
-
+    /************** CRUD pour l'admin
+     * @param objQ *************/
     
+    //l'admin peut ajouter des nouvelles questions-reponse sur la BDD 
+    public void create(Question objQ) {
+        String sql = "INSERT INTO question (id_question, enonce, reponse) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            pstmt.setInt(1, objQ.getId_question());
+            pstmt.setString(2, objQ.getEnonce());
+            pstmt.setString(3, objQ.getReponse());
+            int nbLines = pstmt.executeUpdate();
+            if (nbLines == 1) {
+                ResultSet autoGeneratedKeys = pstmt.getGeneratedKeys();
+                autoGeneratedKeys.first();
+                int id = autoGeneratedKeys.getInt(1);
+                objQ.setId_question(id);
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erreur lors de l'insertion : " + ex.getMessage());
+        }
+    }
+
+
+      public Question read(Integer id) {
+        Question objQ = null;
+        String sql = "SELECT * FROM person WHERE id_person=?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.first()) {
+                objQ = new Question();
+                objQ.setId_question(rs.getInt("id_person"));
+                objQ.setEnonce(rs.getString("login"));
+                objQ.setReponse(rs.getString("pwd"));
+ 
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erreur lors de la lecture : " + ex.getMessage());
+        }
+        return objQ;
+    }
+
+
+     public void update(Question objQ) {
+        String sql = "UPDATE question SET id_question=?, enonce=?, reponse=? WHERE id_question=?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, objQ.getId_question());
+            pstmt.setString(2, objQ.getEnonce());
+            pstmt.setString(3, objQ.getReponse());
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("Erreur lors de l'update : " + ex.getMessage());
+        }
+    }
+
+    public void delete(Integer id) {
+        String sql = "DELETE FROM question WHERE id_question=?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql);) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("Erreur lors du delete : " + ex.getMessage());
+        }
+    }
+
 }
-
-
