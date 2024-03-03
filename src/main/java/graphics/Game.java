@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -343,15 +344,19 @@ public class Game extends JFrame implements ActionListener {
     switch (selectedIndex) {
         case 0:
             selectedTabColor = new Color(255, 255, 176);
+            tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 176)));
             break;
         case 1:
             selectedTabColor = new Color(111, 183, 214);
+            tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(111, 183, 214)));
             break;
         case 2:
             selectedTabColor = new Color(254, 235, 201);
+            tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(254, 235, 201)));
             break;
         case 3:
             selectedTabColor = new Color(181, 225, 174);
+            tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(181, 225, 174)));
             break;
     }
 
