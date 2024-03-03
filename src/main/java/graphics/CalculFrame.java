@@ -17,6 +17,8 @@ import javax.swing.JPanel;
  * @author Le J c'est le S
  */
 public class CalculFrame extends JPanel{
+
+    private static final long serialVersionUID = 1L;
     
     private final CalculPanel calcul;
     private final ResultatPanel res;
@@ -54,6 +56,7 @@ public class CalculFrame extends JPanel{
         private void events (){
             res.getJbautre().addActionListener((ae) -> {
                 getLabel();
+                res.getJtreponse().setText("");
                 //res.getJlsolution().setVisible(false);
             });
                 

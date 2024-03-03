@@ -62,6 +62,11 @@ public class QuestionFrame extends JPanel {
         verif = new JButton("VERIFIER");
         solut = new JButton("SOLUTION");
         autreQuest = new JButton("AUTRE QUESTION");
+        
+        //rendu des boutons plus jolie
+        verif.setBackground(new Color(255, 255, 176));
+        autreQuest.setBackground(new Color(204, 236, 239));
+        solut.setBackground(new Color(224, 243, 176));
 
         // ajout des composants au panneau questRepPanel avec un FlowLayout
         questRepPanel.setLayout(new FlowLayout());
@@ -132,15 +137,12 @@ public class QuestionFrame extends JPanel {
         // Vérifier si la réponse de l'utilisateur est correcte
         boolean reponseCorrecte = questRandom.verifierReponseUtilisateur(question.getId_question(), reponseUtilisateur);
         
-        // Création du pop-up 
-        
-        Popup popup = new Popup();
-        
+        // Création du pop-up         
         // Afficher un message à l'utilisateur en fonction du résultat de la vérification
         if (reponseCorrecte) {
-            popup.afficherMessage("Bonne réponse !", "Vérification", HEIGHT);
+            Popup.afficherMessage("Bonne réponse !", "Vérification", HEIGHT);
         } else {
-            popup.afficherMessage("Mauvaise réponse !", "Vérification", HEIGHT);
+            Popup.afficherMessage("Mauvaise réponse !", "Vérification", HEIGHT);
         }
     }
 
@@ -150,14 +152,13 @@ public class QuestionFrame extends JPanel {
 
         // Récupérer la question complète (y compris la réponse) associée à l'énoncé de la question aléatoire
         Question questionAvecReponse = questRandom.getQuestionByEnonce(enonceQuestion);
-        Popup popup = new Popup();
         // Afficher la réponse correcte dans une boîte de dialogue
         if (questionAvecReponse != null) {
             
             String reponseCorrecte = questionAvecReponse.getReponse();
-            popup.afficherMessage("La réponse correcte est : " + reponseCorrecte, "Solution", HEIGHT);
+            Popup.afficherMessage("La réponse correcte est : " + reponseCorrecte, "Solution", HEIGHT);
         } else {
-            popup.afficherMessage("Impossible de récupérer la réponse correcte.", "Erreur", HEIGHT);
+            Popup.afficherMessage("Impossible de récupérer la réponse correcte.", "Erreur", HEIGHT);
         }
     }
 }

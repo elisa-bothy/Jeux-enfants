@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -20,6 +21,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
@@ -30,6 +32,7 @@ import javax.swing.KeyStroke;
 public class Game extends JFrame implements ActionListener{
 
     private static final long serialVersionUID = 1L;
+    static ImageIcon herbert = new ImageIcon(Game.class.getResource("/images/herbert.png"));
     JPanel south;
     JMenuBar jmb;
     JMenuItem bienvenue, ardoise, math, question, administration, needHelp;
@@ -58,7 +61,7 @@ public class Game extends JFrame implements ActionListener{
         math = new JMenuItem("Math'Adore", KeyEvent.VK_M);
         question = new JMenuItem("Le Savez vous ?", KeyEvent.VK_S);
         administration = new JMenuItem("Administration", KeyEvent.VK_D);
-        needHelp = new JMenuItem("Besoin D'aide?", KeyEvent.VK_B);
+        needHelp = new JMenuItem("Besoin D'aide?", KeyEvent.VK_N);
         file = new JMenu("Onglets");
         help = new JMenu("Aide");
 
@@ -68,7 +71,7 @@ public class Game extends JFrame implements ActionListener{
         tabbedPane.addTab("Ardoise magique", jpTabGraphique);
         tabbedPane.addTab("Math'Adore", jpCalcul);
         tabbedPane.addTab("Le Savez vous ?", jpQuestion);
-
+        
         String password = lectureCode();
         initGui(); // Créer l'interface graphique
         initEvents(password); //Créer les évênements 
@@ -116,6 +119,12 @@ public class Game extends JFrame implements ActionListener{
         administration.setAccelerator(
                 KeyStroke.getKeyStroke(
                         KeyEvent.VK_D, 
+                        InputEvent.CTRL_DOWN_MASK
+                )
+        );
+        needHelp.setAccelerator(
+                KeyStroke.getKeyStroke(
+                        KeyEvent.VK_N, 
                         InputEvent.CTRL_DOWN_MASK
                 )
         );
@@ -174,25 +183,89 @@ public class Game extends JFrame implements ActionListener{
             tabbedPane.setSelectedIndex(4);
         });
         connexion.addActionListener((ActionEvent ae) -> {
-            String code = JOptionPane.showInputDialog(
-                    null,
-                    "Entrez votre mot de passe",
-                    "Connexion",
+            String passwordString = null;
+            JPasswordField pf = new JPasswordField();
+            int option = JOptionPane.showConfirmDialog(
+                    null, 
+                    pf, 
+                    "Entrez votre mot de passe", 
+                    JOptionPane.OK_CANCEL_OPTION, 
                     JOptionPane.QUESTION_MESSAGE
             );
-            if (code != null && code.equals(c)) {
+            // Vérifie si l'utilisateur a appuyé sur le bouton OK
+            if (option == JOptionPane.OK_OPTION) {
+                // Récupère le mot de passe entré par l'utilisateur
+                char[] password = pf.getPassword();
+                // Convertit le tableau de caractères en une chaîne
+                passwordString = new String(password);
+            } else {
+                System.out.println("Annulé");
+            }
+            if (passwordString != null && passwordString.equals(c)) {
                 tabbedPane.addTab("Administration", jpAdministration);
                 connexion.setVisible(false);
-                System.out.println("Admin tab visibility set to true."); 
             }
         });
         needHelp.addActionListener((ActionEvent ae) -> {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Vous êtes sur une interface de jeu. Appuyer sur des onglets pour jouer. ",
-                    "Aide",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+            int selectedIndex = tabbedPane.getSelectedIndex();
+            switch (selectedIndex) {
+                case 0:
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Vous êtes sur une interface de jeu. Appuyer sur des onglets pour jouer. ",
+                        "Aide",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                    break;
+                case 1:
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Pour jouer, petit enfant, tu peux placer le curseur au centre.\n "
+                                + "Tu peux ensuite choisir la couleur de ton dessin avec les boutons sur la gauche, \n"
+                                + "Et tu peux effacer tout ton dessin avec le  bouton sur la droite \n"
+                                + "Amuse-toi bien !",
+                        "Aide",
+                        JOptionPane.PLAIN_MESSAGE,
+                        herbert
+                    );
+                    break;
+                    case 2:
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Pour jouer, petit enfant, tu dois répondre au calcul \n"
+                                + "Réfléchi bien, puis écrit ta réponse \n"
+                                + "et appuie sur le bouton Vérification au bas de la page \n"
+                                + "Si la question est trop dur n'hésite pas à appuyer sur le bouton Solution\n"
+                                + "Tu peux changer de question à tout moment avec le bouton Nouveau Calcul",
+                        "Aide",
+                        JOptionPane.PLAIN_MESSAGE,
+                        herbert
+                    );
+                    break;
+                    case 3:
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Pour jouer, petit enfant, tu dois répondre à la question de culture \n"
+                                + "Réfléchi bien, puis écrit ta réponse \n"
+                                + "et appuie sur le bouton Vérifier au bas de la page \n"
+                                + "Si la question est trop dur n'hésite pas à appuyer sur le bouton Solution\n"
+                                + "Tu peux changer de question à tout moment avec le bouton Autre question",
+                        "Aide",
+                        JOptionPane.PLAIN_MESSAGE,
+                        herbert
+                    );
+                    break;
+                    case 4:
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Onglet Administration, \n"
+                                + "Si vous n'êtes pas un administrateur, \n"
+                                + "Veuillez quitter cet onglet",
+                        "Aide",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                    break;
+            }
         });
         bienvenue.addActionListener((ActionEvent ae) -> {
             tabbedPane.setSelectedIndex(0);

@@ -83,7 +83,6 @@ public class AdministrationFrame extends JPanel {
         
         initGui();// Créer l'interface de JPanel
         initEvents();
-        
     }
 
     private void initGui() {
@@ -152,11 +151,9 @@ public class AdministrationFrame extends JPanel {
             question.setVisible(false);
             supprimer.setVisible(false);
             retour.setVisible(false);
-            jcb.addItemListener((e) -> {
-                // Récupérer l'index de la question sélectionnée dans le JComboBox
-                int selectedIndex = jcb.getSelectedIndex();
-                qdao.delete(selectedIndex);
-            });
+            int selectedIndex = jcb.getSelectedIndex();
+            System.out.println("numquestion"+ selectedIndex);
+            qdao.delete(selectedIndex);
         });
         modifier.addActionListener((ActionEvent ae) -> {
             radios.setVisible(true);
@@ -167,15 +164,14 @@ public class AdministrationFrame extends JPanel {
             question.setVisible(false);
             supprimer.setVisible(false);
             retour.setVisible(false);
-            jcb.addItemListener((e) -> {
-                // Récupérer l'index de la question sélectionnée dans le JComboBox
-                int selectedIndex = jcb.getSelectedIndex();
-                 // Récupérer la question sélectionnée dans le JComboBox
-                Question selectedQuestion = questionList.toArray(new Question[0])[selectedIndex];
-                String s = question.getText();
-                qdao.updateEnonce(selectedQuestion, s);
-            });
-        });
+            // Récupérer l'index de la question sélectionnée dans le JComboBox
+            int selectedIndex = jcb.getSelectedIndex();
+             // Récupérer la question sélectionnée dans le JComboBox
+            Question selectedQuestion = questionList.toArray(new Question[0])[selectedIndex];
+            String s = question.getText();
+            System.out.println("enonce"+ s);
+            qdao.updateEnonce(selectedQuestion, s);
+        }); 
         enregistrer.addActionListener((ActionEvent ae) -> {
             radios.setVisible(true);
             modification.setVisible(true);
@@ -186,6 +182,8 @@ public class AdministrationFrame extends JPanel {
             retour.setVisible(false);
             String questionEnonce = question.getText();
             String questionReponse = reponse.getText();
+            System.out.println("enonce"+ questionEnonce);
+            System.out.println("reponse"+ questionReponse);
             qdao.create(questionEnonce, questionReponse);
         });
         jcb.addItemListener((e)->{

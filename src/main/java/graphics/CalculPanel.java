@@ -5,6 +5,7 @@
 
 package graphics;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -29,6 +30,7 @@ public class CalculPanel extends JPanel{
         
         equation = new JLabel("1 + 1",JLabel.CENTER);
         equation.setFont(new Font("Bold", Font.BOLD, 80));
+        equation.setForeground(new Color(72, 181, 163));
         add(equation);
 
     }
