@@ -29,41 +29,47 @@ public class QuestionDao {
     public Question readEnonce(Integer id) {
         Question objQ = null;
         String sql = "SELECT * FROM question WHERE id_question=?";
-        PreparedStatement pstmt;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
         try {
             pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.first()) {
                 objQ = new Question();
                 objQ.setId_question(rs.getInt("id_question"));
                 objQ.setEnonce(rs.getString("enonce"));
-
             }
         } catch (SQLException ex) {
             System.out.println("Erreur lors de la lecture question : " + ex.getMessage());
+        } finally {
+            // Fermeture des ressources et de la connexion
+            closeResources(rs, pstmt);
         }
         return objQ;
     }
-    
+
     public Question readReponses(Integer id) {
         Question objR = null;
         String sql = "SELECT * FROM question WHERE id_question=?";
-        PreparedStatement pstmt;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
         try {
             pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.first()) {
                 objR = new Question();
                 objR.setId_question(rs.getInt("id_question"));
                 objR.setReponse(rs.getString("reponse"));
-
             }
         } catch (SQLException ex) {
             System.out.println("Erreur lors de la lecture reponse : " + ex.getMessage());
+        } finally {
+            // Fermeture des ressources et de la connexion
+            closeResources(rs, pstmt);
         }
         return objR;
     }
@@ -71,11 +77,12 @@ public class QuestionDao {
     public Question readRandomQuestion() {
         Question randomQuestion = null;
         String sql = "SELECT * FROM question";
-        PreparedStatement pstmt;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
         try {
             pstmt = connection.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             List<Question> questionList = new ArrayList<>();
 
@@ -97,6 +104,9 @@ public class QuestionDao {
 
         } catch (SQLException ex) {
             System.out.println("Erreur lors de la lecture d'une question aléatoire : " + ex.getMessage());
+        } finally {
+            // Fermeture des ressources et de la connexion
+            closeResources(rs, pstmt);
         }
 
         return randomQuestion;
@@ -105,10 +115,13 @@ public class QuestionDao {
     public Question getQuestionByEnonce(String enonce) {
         Question question = null;
         String sql = "SELECT * FROM question WHERE enonce = ?";
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
         try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, enonce);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 question = new Question();
                 question.setId_question(rs.getInt("id_question"));
@@ -117,6 +130,9 @@ public class QuestionDao {
             }
         } catch (SQLException ex) {
             System.out.println("Erreur lors de la récupération de la question par énoncé : " + ex.getMessage());
+        } finally {
+            // Fermeture des ressources et de la connexion
+            closeResources(rs, pstmt);
         }
         return question;
     }
@@ -124,10 +140,13 @@ public class QuestionDao {
     public boolean verifierReponseUtilisateur(int idQuestion, String reponseUtilisateur) {
         boolean reponseCorrecte = false;
         String sql = "SELECT reponse FROM question WHERE id_question = ?";
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
         try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, idQuestion);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 String reponseCorrecteDB = rs.getString("reponse");
                 // Supprimer les espaces en début et fin de chaîne
@@ -139,124 +158,158 @@ public class QuestionDao {
             }
         } catch (SQLException ex) {
             System.out.println("Erreur lors de la vérification de la réponse de l'utilisateur : " + ex.getMessage());
+        } finally {
+            // Fermeture des ressources et de la connexion
+            closeResources(rs, pstmt);
         }
         return reponseCorrecte;
     }
 
-    /************** CRUD pour l'admin
-     * @param objQ *************/
-/* public String trouverSolution(String enonce) {
-    String solution = null;
-    String sql = "SELECT reponse FROM question WHERE enonce = ?";
-    try {
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setString(1, enonce);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            solution = rs.getString("reponse");
-        }
-    } catch (SQLException ex) {
-        System.out.println("Erreur lors de l'affichage de la solution : " + ex.getMessage());
-    }
-    return solution;
-}*/
-  public int count(){
+    public int count() {
         int count = 0;
-        String sql = "SELECT COUNT(*) AS c FROM person";
+        String sql = "SELECT COUNT(*) AS c FROM question";
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
         try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
-            if(rs.first()){
+            pstmt = connection.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            if (rs.first()) {
                 count = rs.getInt("c");
             }
         } catch (SQLException ex) {
             System.out.println("Erreur lors du comptage :" + ex.getMessage());
+        } finally {
+            // Fermeture des ressources et de la connexion
+            closeResources(rs, pstmt);
         }
         return count;
     }
-    
-    public Collection<Question> list(){
-        ArrayList<Person> list = new ArrayList<>();
-        String sql = "SELECT * FROM person";
+
+    public Collection<Question> list() {
+        ArrayList<Question> list = new ArrayList<>();
+        String sql = "SELECT * FROM question";
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
         try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
-            while(rs.next()){
-                Person p = new Person();
-                p.setId_person(rs.getInt("id_person"));
-                p.setLogin(rs.getString("login"));
-                p.setPwd(rs.getString("pwd"));
-                p.setId_role(rs.getLong("id_role"));
-                list.add(p);
+            pstmt = connection.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Question q = new Question();
+                q.setId_question(rs.getInt("id_question"));
+                q.setEnonce(rs.getString("enonce"));
+                q.setReponse(rs.getString("reponse"));
+                list.add(q);
             }
         } catch (SQLException ex) {
             System.out.println("Erreur lors du listage :" + ex.getMessage());
+        } finally {
+            // Fermeture des ressources et de la connexion
+            closeResources(rs, pstmt);
         }
         return list;
     }
 
+    public void create(String enonce, String reponse) {
+        String sql = "INSERT INTO question (enonce, reponse) " + "VALUES (?, ?)";
+        PreparedStatement pstmt = null;
 
-    
-    //l'admin peut ajouter des nouvelles questions-reponse sur la BDD 
-    public void create(Question objQ) {
-        String sql = "INSERT INTO question (id_question, enonce, reponse) VALUES (?, ?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            pstmt.setInt(1, objQ.getId_question());
-            pstmt.setString(2, objQ.getEnonce());
-            pstmt.setString(3, objQ.getReponse());
+        try {
+            pstmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, enonce);
+            pstmt.setString(2, reponse);
             int nbLines = pstmt.executeUpdate();
             if (nbLines == 1) {
                 ResultSet autoGeneratedKeys = pstmt.getGeneratedKeys();
                 autoGeneratedKeys.first();
-                int id = autoGeneratedKeys.getInt(1);
-                objQ.setId_question(id);
             }
         } catch (SQLException ex) {
             System.err.println("Erreur lors de l'insertion : " + ex.getMessage());
+        } finally {
+            // Fermeture des ressources et de la connexion
+            closeResources(null, pstmt);
         }
     }
 
-
-      public Question read(Integer id) {
+    public Question read(Integer id) {
         Question objQ = null;
         String sql = "SELECT * FROM question WHERE id_question=?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.first()) {
                 objQ = new Question();
                 objQ.setId_question(rs.getInt("id_question"));
                 objQ.setEnonce(rs.getString("enonce"));
                 objQ.setReponse(rs.getString("reponse"));
- 
             }
         } catch (SQLException ex) {
             System.err.println("Erreur lors de la lecture : " + ex.getMessage());
+        } finally {
+            // Fermeture des ressources et de la connexion
+            closeResources(rs, pstmt);
         }
         return objQ;
     }
 
+    public void updateEnonce(Question objQ, String s) {
+        String sql = "UPDATE question SET enonce=? WHERE id_question=?";
+        PreparedStatement pstmt = null;
 
-     public void update(Question objQ) {
-        String sql = "UPDATE question SET id_question=?, enonce=?, reponse=? WHERE id_question=?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, objQ.getId_question());
-            pstmt.setString(2, objQ.getEnonce());
-            pstmt.setString(3, objQ.getReponse());
+        try {
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, s);
+            pstmt.setInt(2, objQ.getId_question());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             System.err.println("Erreur lors de l'update : " + ex.getMessage());
+        } finally {
+            // Fermeture des ressources et de la connexion
+            closeResources(null, pstmt);
         }
     }
 
     public void delete(Integer id) {
         String sql = "DELETE FROM question WHERE id_question=?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql);) {
+        PreparedStatement pstmt = null;
+
+        try {
+            pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             System.err.println("Erreur lors du delete : " + ex.getMessage());
+        } finally {
+            // Fermeture des ressources et de la connexion
+            closeResources(null, pstmt);
         }
     }
 
+    /**
+     * Ferme les ressources ResultSet et PreparedStatement
+     *
+     * @param rs ResultSet à fermer
+     * @param pstmt PreparedStatement à fermer
+     */
+    private void closeResources(ResultSet rs, PreparedStatement pstmt) {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                System.err.println("Erreur lors de la fermeture du ResultSet : " + ex.getMessage());
+            }
+        }
+        if (pstmt != null) {
+            try {
+                pstmt.close();
+            } catch (SQLException ex) {
+                System.err.println("Erreur lors de la fermeture du PreparedStatement : " + ex.getMessage());
+            }
+        }
+    }
 }
