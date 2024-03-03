@@ -149,6 +149,7 @@ public class Game extends JFrame implements ActionListener {
             jpCalcul.setVisible(selectedIndex == 2);
             jpQuestion.setVisible(selectedIndex == 3);
             jpAdministration.setVisible(selectedIndex == 4);
+            tabbedPaneColor();
         });
         file.add(bienvenue);
         file.add(ardoise);
@@ -335,6 +336,31 @@ public class Game extends JFrame implements ActionListener {
         return p;
     }
     
+    private void tabbedPaneColor() {
+    int selectedIndex = tabbedPane.getSelectedIndex();
+    Color selectedTabColor = null;
+
+    switch (selectedIndex) {
+        case 0:
+            selectedTabColor = new Color(255, 255, 176);
+            break;
+        case 1:
+            selectedTabColor = new Color(111, 183, 214);
+            break;
+        case 2:
+            selectedTabColor = new Color(254, 235, 201);
+            break;
+        case 3:
+            selectedTabColor = new Color(181, 225, 174);
+            break;
+    }
+
+    if (selectedTabColor != null) {
+        //pour définir la couleur de fond de l'onglet sélectionné seulement
+        tabbedPane.setBackgroundAt(selectedIndex, selectedTabColor);
+    }
+}
+
     @Override
     public void actionPerformed(ActionEvent ae) {
     }
