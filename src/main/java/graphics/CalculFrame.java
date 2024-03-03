@@ -52,14 +52,17 @@ public class CalculFrame extends JPanel {
         res.getJbautre().addActionListener((ae) -> {
             getLabel();
             res.getJtreponse().setText("");
-            //res.getJlsolution().setVisible(false);
         });
         
         res.getJbverification().addActionListener((ae) -> {
             if (comparaison() == true) {
                 Popup.afficherMessage("Bravo Jeune Padawan !", "Vérification", HEIGHT);
             } else {
-                Popup.afficherMessage("Ce n'est pas ça essaie encore", "Vérification", HEIGHT);
+                Popup.afficherMessage(
+                        "Ce n'est pas ça, essaie encore !", 
+                        "Vérification", 
+                        HEIGHT
+                );
             }
         });
         
