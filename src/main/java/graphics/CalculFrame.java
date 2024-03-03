@@ -6,6 +6,7 @@ package graphics;
 
 import entities.Calcul;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,10 +28,14 @@ public class CalculFrame extends JPanel {
         // Ajouter les panels secondaires 
         calcul = new CalculPanel();
         res = new ResultatPanel();
-
+        
+        // Ajout de couleurs
+        calcul.setBackground(new Color(254, 235, 201));
+        res.setBackground(new Color(254, 235, 201));
         // Ajouter à la frame les Jpanel
         this.add(calcul);
         this.add(res);
+        this.setBackground(new Color(254, 235, 201));
 
         // Ajuster les blocs entre eux 
         initGui();
@@ -42,8 +47,7 @@ public class CalculFrame extends JPanel {
     private void initGui() {
         Container contentPane = this;
         contentPane.setLayout(new BorderLayout());
-        
-        contentPane.add(res, BorderLayout.CENTER);
+        contentPane.add(res, BorderLayout.EAST);
         contentPane.add(calcul, BorderLayout.WEST);
     }
 

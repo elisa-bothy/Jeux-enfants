@@ -141,6 +141,8 @@ public class AdministrationFrame extends JPanel {
             modifier.setVisible(false);
             question.setVisible(false);
             supprimer.setVisible(false);
+            question.setText("");
+            reponse.setText("");
         });
         supprimer.addActionListener((ActionEvent ae) -> {
             radios.setVisible(true);
@@ -154,6 +156,8 @@ public class AdministrationFrame extends JPanel {
             int selectedIndex = jcb.getSelectedIndex();
             System.out.println("numquestion" + selectedIndex);
             qdao.delete(selectedIndex);
+            question.setText("");
+            reponse.setText("");
         });
         modifier.addActionListener((ActionEvent ae) -> {
             radios.setVisible(true);
@@ -171,6 +175,8 @@ public class AdministrationFrame extends JPanel {
             String s = question.getText();
             System.out.println("enonce" + s);
             qdao.updateEnonce(selectedQuestion, s);
+            question.setText("");
+            reponse.setText("");
         });
         enregistrer.addActionListener((ActionEvent ae) -> {
             radios.setVisible(true);
@@ -185,6 +191,8 @@ public class AdministrationFrame extends JPanel {
             System.out.println("enonce" + questionEnonce);
             System.out.println("reponse" + questionReponse);
             qdao.create(questionEnonce, questionReponse);
+            question.setText("");
+            reponse.setText("");
         });
         jcb.addItemListener((e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {

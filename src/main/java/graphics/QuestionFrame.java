@@ -66,9 +66,9 @@ public class QuestionFrame extends JPanel {
         verif.setBackground(new Color(255, 255, 176));
         autreQuest.setBackground(new Color(204, 236, 239));
         solut.setBackground(new Color(224, 243, 176));
-        verif.setPreferredSize(new Dimension(300, 200));
-        autreQuest.setPreferredSize(new Dimension(300, 200));
-        solut.setPreferredSize(new Dimension(300, 200));
+        verif.setPreferredSize(new Dimension(250, 200));
+        autreQuest.setPreferredSize(new Dimension(250, 200));
+        solut.setPreferredSize(new Dimension(250, 200));
 
         // ajout des composants au panneau questRepPanel avec un FlowLayout
         questRepPanel.setLayout(new FlowLayout());
@@ -82,11 +82,16 @@ public class QuestionFrame extends JPanel {
 
         // positionner les composants
         setLayout(new BorderLayout());
-
+        
+        //ajout de couleurs
+        questRepPanel.setBackground(new Color(181, 225, 174));
+        btnPanel.setBackground(new Color(181, 225, 174));
+        this.setBackground(new Color(181, 225, 174));
+        
         // Ajout des panneaux à la frame
         add(questRepPanel, BorderLayout.NORTH);
         add(btnPanel, BorderLayout.SOUTH);
-
+        
         this.initGui();
         this.afficherQuestRandom();
         this.initEvents();

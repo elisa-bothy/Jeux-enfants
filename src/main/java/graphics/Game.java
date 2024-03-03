@@ -49,6 +49,8 @@ public class Game extends JFrame implements ActionListener {
     AdministrationFrame jpAdministration;//pas visible tant que le code donné n'est pas le bon
 
     public Game() {
+        super("Jouons avec Herbie !");
+        this.setIconImage(herbert.getImage()); 
         south = new JPanel();
         jpAccueil = new AccueilFrame();
         jpCalcul = new CalculFrame();
@@ -222,8 +224,8 @@ public class Game extends JFrame implements ActionListener {
                     break;
                 case 1:
                     jl.setText("<html>Pour jouer, petit enfant, tu peux placer le curseur au centre.<br>"
-                            + "Tu peux ensuite choisir la couleur de ton dessin avec les boutons sur la gauche, <br>"
-                            + "Et tu peux effacer tout ton dessin avec le  bouton sur la droite <br>"
+                            + "Tu peux ensuite choisir la couleur de ton dessin avec les boutons sur la droite, <br>"
+                            + "Et tu peux effacer tout ton dessin avec le  bouton sur la gauche <br>"
                             + "Amuse-toi bien !</html>");
                     JOptionPane.showMessageDialog(
                             null,
@@ -332,7 +334,7 @@ public class Game extends JFrame implements ActionListener {
         }
         return p;
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent ae) {
     }

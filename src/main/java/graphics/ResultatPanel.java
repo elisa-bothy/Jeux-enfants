@@ -81,8 +81,9 @@ public class ResultatPanel extends JPanel {
         jtreponse.setForeground(new Color(117, 137, 191));
 
         //rendu plus jolie des boutons
-        jbverification.setPreferredSize(new Dimension(300, 100));
-        jbautre.setPreferredSize(new Dimension(300, 100));
+        jbverification.setPreferredSize(new Dimension(250, 100));
+        jbautre.setPreferredSize(new Dimension(250, 100));
+        jbsolution.setPreferredSize(new Dimension(250, 100));
         jbverification.setBackground(new Color(255, 255, 176));
         jbautre.setBackground(new Color(204, 236, 239));
         jbsolution.setBackground(new Color(224, 243, 176));

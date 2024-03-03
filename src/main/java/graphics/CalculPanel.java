@@ -27,7 +27,7 @@ public class CalculPanel extends JPanel {
         this.setPreferredSize(new Dimension(400, 500));
 
         equation = new JLabel("1 + 1", JLabel.CENTER);
-        equation.setFont(new Font("Bold", Font.BOLD, 80));
+        equation.setFont(new Font("Bold", Font.BOLD, 100));
         equation.setForeground(new Color(72, 181, 163));
         add(equation);
 

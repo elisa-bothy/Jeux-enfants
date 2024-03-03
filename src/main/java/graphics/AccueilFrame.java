@@ -39,9 +39,9 @@ public class AccueilFrame extends JPanel {
         jl.setForeground(new Color(72, 181, 163));
         jl.setFont(new Font("Bold", Font.BOLD, 40));
         icon.setIcon(herbert);
-        icon.setVisible(true);
-        icon.setOpaque(true);
+        icon.setBackground(new Color(255, 255, 176));
         icon.setPreferredSize(new Dimension(200, 20));
+        this.setBackground(new Color(255, 255, 176));
         this.setLayout(new BorderLayout());
         this.add(jl, BorderLayout.EAST);
         this.add(icon, BorderLayout.WEST);
