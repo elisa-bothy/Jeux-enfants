@@ -6,6 +6,7 @@
 package graphics;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,8 +26,9 @@ public class CalculPanel extends JPanel{
         this.setLayout(new GridLayout(1, 0));
         this.setPreferredSize(new Dimension(400, 500));
         
-        equation = new JLabel("1 + 1",JLabel.CENTER);
         
+        equation = new JLabel("1 + 1",JLabel.CENTER);
+        equation.setFont(new Font("Bold", Font.BOLD, 80));
         add(equation);
 
     }
