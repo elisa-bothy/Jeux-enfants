@@ -40,8 +40,8 @@ public class AdministrationFrame extends JPanel {
     JTextField question;
     JTextField reponse;
     //récupérer les questions
-    QuestionDao qdao ;
-    Collection<Question> questionList ;
+    QuestionDao qdao;
+    Collection<Question> questionList;
     int nbQuestion;
     String[] questionStatements;
 
@@ -62,11 +62,11 @@ public class AdministrationFrame extends JPanel {
         supprimer = new JButton("Supprimer");
         modifier = new JButton("Modifier");
         retour = new JButton("Retour");
-        
+
         //récupération des questions
         qdao = new QuestionDao();
         questionList = qdao.list();
-        nbQuestion =qdao.count();
+        nbQuestion = qdao.count();
 
         // Création d'un tableau pour stocker les énoncés des questions
         questionStatements = new String[nbQuestion];
@@ -77,10 +77,10 @@ public class AdministrationFrame extends JPanel {
             questionStatements[index] = q.getEnonce();
             index++;
         }
-        
+
         //liste déroulante
         jcb = new JComboBox(questionStatements);
-        
+
         initGui();// Créer l'interface de JPanel
         initEvents();
     }
@@ -152,7 +152,7 @@ public class AdministrationFrame extends JPanel {
             supprimer.setVisible(false);
             retour.setVisible(false);
             int selectedIndex = jcb.getSelectedIndex();
-            System.out.println("numquestion"+ selectedIndex);
+            System.out.println("numquestion" + selectedIndex);
             qdao.delete(selectedIndex);
         });
         modifier.addActionListener((ActionEvent ae) -> {
@@ -166,12 +166,12 @@ public class AdministrationFrame extends JPanel {
             retour.setVisible(false);
             // Récupérer l'index de la question sélectionnée dans le JComboBox
             int selectedIndex = jcb.getSelectedIndex();
-             // Récupérer la question sélectionnée dans le JComboBox
+            // Récupérer la question sélectionnée dans le JComboBox
             Question selectedQuestion = questionList.toArray(new Question[0])[selectedIndex];
             String s = question.getText();
-            System.out.println("enonce"+ s);
+            System.out.println("enonce" + s);
             qdao.updateEnonce(selectedQuestion, s);
-        }); 
+        });
         enregistrer.addActionListener((ActionEvent ae) -> {
             radios.setVisible(true);
             modification.setVisible(true);
@@ -182,14 +182,14 @@ public class AdministrationFrame extends JPanel {
             retour.setVisible(false);
             String questionEnonce = question.getText();
             String questionReponse = reponse.getText();
-            System.out.println("enonce"+ questionEnonce);
-            System.out.println("reponse"+ questionReponse);
+            System.out.println("enonce" + questionEnonce);
+            System.out.println("reponse" + questionReponse);
             qdao.create(questionEnonce, questionReponse);
         });
-        jcb.addItemListener((e)->{
-            if(e.getStateChange() == ItemEvent.SELECTED){
+        jcb.addItemListener((e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 supprimer.setVisible(true);
             }
         });
-    }    
+    }
 }

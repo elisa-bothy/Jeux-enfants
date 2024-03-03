@@ -15,7 +15,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -49,7 +48,7 @@ public class QuestionFrame extends JPanel {
         Font nouvellePoliceQuestion = new Font(questLabel.getFont().getName(), Font.BOLD, 25);
         // Définition de la nouvelle police pour le JLabel
         questLabel.setFont(nouvellePoliceQuestion);
-        
+
         repText = new JTextField(255);
         // je change le font de mon text
         Font nouvellePolice = new Font(repText.getFont().getName(), Font.PLAIN, 46);
@@ -62,7 +61,7 @@ public class QuestionFrame extends JPanel {
         verif = new JButton("VERIFIER");
         solut = new JButton("SOLUTION");
         autreQuest = new JButton("AUTRE QUESTION");
-        
+
         //rendu des boutons plus jolie
         verif.setBackground(new Color(255, 255, 176));
         autreQuest.setBackground(new Color(204, 236, 239));
@@ -136,7 +135,7 @@ public class QuestionFrame extends JPanel {
 
         // Vérifier si la réponse de l'utilisateur est correcte
         boolean reponseCorrecte = questRandom.verifierReponseUtilisateur(question.getId_question(), reponseUtilisateur);
-        
+
         // Création du pop-up         
         // Afficher un message à l'utilisateur en fonction du résultat de la vérification
         if (reponseCorrecte) {
@@ -154,7 +153,7 @@ public class QuestionFrame extends JPanel {
         Question questionAvecReponse = questRandom.getQuestionByEnonce(enonceQuestion);
         // Afficher la réponse correcte dans une boîte de dialogue
         if (questionAvecReponse != null) {
-            
+
             String reponseCorrecte = questionAvecReponse.getReponse();
             Popup.afficherMessage("La réponse correcte est : " + reponseCorrecte, "Solution", HEIGHT);
         } else {

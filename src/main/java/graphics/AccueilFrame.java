@@ -23,7 +23,7 @@ public class AccueilFrame extends JPanel {
     String text;
     JLabel icon;
     static ImageIcon herbert = new ImageIcon(Game.class.getResource("/images/herbert.png"));
-    
+
     public AccueilFrame() {
         jl = new JLabel();
         icon = new JLabel();
@@ -32,9 +32,9 @@ public class AccueilFrame extends JPanel {
 
     private void initGui() {
         text = "<html>Bienvenue cher enfant ! <br>"
-            + "Prépare toi à vivre de grandes aventures ! <br>"
-            + "Clique en haut sur l'onglet qui t'intéresses <br>"
-            + "et surtout AMUSE-TOI !</html>";
+                + "Prépare toi à vivre de grandes aventures ! <br>"
+                + "Clique en haut sur l'onglet qui t'intéresses <br>"
+                + "et surtout AMUSE-TOI !</html>";
         jl.setText(text);
         jl.setForeground(new Color(72, 181, 163));
         jl.setFont(new Font("Bold", Font.BOLD, 40));
@@ -46,5 +46,5 @@ public class AccueilFrame extends JPanel {
         this.add(jl, BorderLayout.EAST);
         this.add(icon, BorderLayout.WEST);
     }
-    
+
 }

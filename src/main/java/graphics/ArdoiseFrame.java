@@ -58,7 +58,6 @@ public class ArdoiseFrame extends JPanel {
         colorPanel.add(createColorButton(Color.YELLOW));
         colorPanel.add(createColorButton(Color.BLACK));
         colorPanel.add(createColorButton(Color.GRAY));
-        
 
         // position des éléments
         this.setLayout(new BorderLayout());

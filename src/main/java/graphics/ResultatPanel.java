@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package graphics;
 
 import java.awt.BorderLayout;
@@ -18,7 +17,7 @@ import javax.swing.JTextField;
  *
  * @author Le J c'est le S
  */
-public class ResultatPanel extends JPanel{
+public class ResultatPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private JLabel jlsolution;
@@ -68,27 +67,26 @@ public class ResultatPanel extends JPanel{
     }
 
     public ResultatPanel() {
-        
+
         jlsolution = new JLabel(" 2 ");
         jbsolution = new JButton("Solution");
         jbverification = new JButton("Verification");
         jbautre = new JButton("Nouveau Calcul");
         jtreponse = new JTextField();
-        
+
         //rendu plus jolie du texte
-        jtreponse.setPreferredSize(new Dimension(100,400));
+        jtreponse.setPreferredSize(new Dimension(100, 400));
         jlsolution.setVisible(false);
         jtreponse.setFont(new Font("Bold", Font.BOLD, 200));
         jtreponse.setForeground(new Color(117, 137, 191));
 
-        
         //rendu plus jolie des boutons
         jbverification.setPreferredSize(new Dimension(300, 100));
         jbautre.setPreferredSize(new Dimension(300, 100));
         jbverification.setBackground(new Color(255, 255, 176));
         jbautre.setBackground(new Color(204, 236, 239));
         jbsolution.setBackground(new Color(224, 243, 176));
-        
+
         setLayout(new BorderLayout());
         add(jlsolution, BorderLayout.SOUTH);
         add(jbsolution, BorderLayout.CENTER);
@@ -96,6 +94,5 @@ public class ResultatPanel extends JPanel{
         add(jbautre, BorderLayout.EAST);
         add(jtreponse, BorderLayout.NORTH);
     }
-    
-    
+
 }
