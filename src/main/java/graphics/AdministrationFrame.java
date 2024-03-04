@@ -50,6 +50,7 @@ public class AdministrationFrame extends JPanel {
     JPanel east;
     JPanel west;
     JPanel center;
+    private int level;
 
     public AdministrationFrame() {
         welcome = new JLabel();
@@ -174,7 +175,6 @@ public class AdministrationFrame extends JPanel {
             supprimer.setVisible(false);
             retour.setVisible(false);
             int selectedIndex = jcb.getSelectedIndex();
-            System.out.println("numquestion" + selectedIndex);
             qdao.delete(selectedIndex+1);
             question.setText("");
             reponse.setText("");

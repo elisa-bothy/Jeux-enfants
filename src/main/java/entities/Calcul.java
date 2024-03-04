@@ -13,45 +13,50 @@ import java.util.Random;
  */
 public class Calcul extends Random {
 
+    private static final long serialVersionUID = 1L;
+
     public Calcul() {
     }
     
     // Méthode pour générer un nombre aléatoire
-    public int nombreAleatoire() {
-        Random random = new Random();
-        int nbAlea = random.nextInt(10) + 1;
-        return nbAlea;
+    public int nombreAleatoire(int level) {
+        if (level==1){
+            Random random = new Random();
+            int nbAlea = random.nextInt(10) + 1;
+            return nbAlea;
+        }else{
+            Random random = new Random();
+            int nbAlea = random.nextInt(1_000) + 1;
+            return nbAlea;
+        }
     }
  
     // Méthode pour générer une opération aléatoire (+ ou -)
-    public String operandeAleatoire() {
-        // Choix aléatoire entre 0 et 1
-        Random random = new Random();
-        int choix = random.nextInt(2);
-        if (choix == 0) {
-            return "+"; // Addition
-        } else {
-            return "-"; // Soustraction
+    public String operandeAleatoire(int level) {
+        if (level==1){
+            // Choix aléatoire entre 0 et 1
+            Random random = new Random();
+            int choix = random.nextInt(2);
+            if (choix == 0) {
+                return "+"; // Addition
+            } else {
+                return "-"; // Soustraction
+            }
+        }else{
+            Random random = new Random();
+            int choix = random.nextInt(3);
+            switch(choix){
+                case 0: 
+                    return "+";
+                case 1: 
+                    return "-";
+                case 2:
+                    return "x";
+                case 3 :
+                    return "/";
+                default:
+                    return "+";
+            }
         }
     }
-    
-    // Méthode pour retourner une équation aléatoire avec une string 
-    public String equationAleatoire() {
-        String equation;
-        int nombre1 = this.nombreAleatoire();
-        int nombre2 = this.nombreAleatoire();
-        String operande = this.operandeAleatoire();
-        
-        equation = String.valueOf(nombre1)+operande+String.valueOf(nombre2);
-        
-        return equation;
-    }
-    
-    // Méthode pour retrouver le résultat à partir d'une string de nombre 
-    public int resultat(String equation){
-        int resultat = 0;
-        
-        return resultat;
-    }
-
 }

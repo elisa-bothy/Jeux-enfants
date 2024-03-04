@@ -8,6 +8,7 @@ import entities.Calcul;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JOptionPane;
@@ -17,19 +18,23 @@ import javax.swing.JPanel;
  *
  * @author Le J c'est le S
  */
-public class CalculFrame extends JPanel {
+public final class CalculFrame extends JPanel {
     
     private static final long serialVersionUID = 1L;
     
     private final CalculPanel calcul;
     private final ResultatPanel res;
+    int level = 1;
 
     // CREATION DE LA FENETRE --------------------------------------------------
-    public CalculFrame() {
+    public CalculFrame(AdministrationFrame af) {
 
         // Ajouter les panels secondaires 
         calcul = new CalculPanel();
         res = new ResultatPanel();
+        
+        //prend en charge le changement de niveau
+        changeRadios(af);
         
         // Ajout de couleurs
         calcul.setBackground(new Color(254, 235, 201));
@@ -38,10 +43,10 @@ public class CalculFrame extends JPanel {
         this.add(calcul);
         this.add(res);
         this.setBackground(new Color(254, 235, 201));
-
+        
         // Ajuster les blocs entre eux 
         initGui();
-        events();
+        events(level);
         
     } // -----------------------------------------------------------------------
 
@@ -54,9 +59,9 @@ public class CalculFrame extends JPanel {
     }
 
     // GERER LES EVENTS
-    private void events() {
+    private void events(int level) {
         res.getJbautre().addActionListener((ae) -> {
-            getLabel();
+            getLabel(level);
             res.getJtreponse().setText("");
         });
         res.getJtreponse().addKeyListener(new KeyListener() {
@@ -108,26 +113,46 @@ public class CalculFrame extends JPanel {
 
     // FONCTION SUPPORT ----------------------------------------------------        
     // Fonction générant les labels jlsolution et equation 
-    private void getLabel() {
+    private void getLabel(int level) {
         // EQUATION     
         Calcul alea = new Calcul();
         // genère 2 nombre aléatoire 
-        int a = alea.nombreAleatoire();
-        int b = alea.nombreAleatoire();
+        int a = alea.nombreAleatoire(level);
+        int b = alea.nombreAleatoire(level);
+        int d = 0;
 
         //genérer l'opérande aléatoire 
-        String operande = alea.operandeAleatoire();
+        String operande = alea.operandeAleatoire(level);
 
         // genérer une équation aléatoire 
-        int d;
-        if ("+".equals(operande)) {
-            d = a + b;
-            
-        } else {
-            do {
-                b = alea.nombreAleatoire();
-            } while (a < b);
-            d = a - b;
+        if (level==1){
+            if (operande.equals("+")) {
+                d = a + b;
+
+            } else {
+                do {
+                    b = alea.nombreAleatoire(level);
+                } while (a < b);
+                d = a - b;
+            }
+        }else{
+            switch(operande){
+                case "+": 
+                    d = a + b;
+                    break;
+                case "-": 
+                    d = a - b;
+                    break;
+                case "x":
+                    d = a * b;
+                    break;
+                case "/" :
+                    d = a / b;
+                    break;
+                default:
+                    d = a + b;
+                    break;
+            }          
         }
         String calculation = a + " " + operande + " " + b;
 
@@ -157,5 +182,21 @@ public class CalculFrame extends JPanel {
             return false;
         }
     }
-    
+    //avoir le level qui se met à jour
+    public void changeRadios(AdministrationFrame af) {
+         af.jrb1.setSelected(true); // Sélectionnez le premier bouton radio pour déclencher l'événement
+         af.jrb1.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                level = 1;
+                getLabel(level);
+            }
+        });
+
+        af.jrb2.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                level = 2;
+                getLabel(level);
+            }
+        });
+    }
 }

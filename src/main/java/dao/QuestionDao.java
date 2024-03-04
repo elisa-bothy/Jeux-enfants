@@ -74,16 +74,17 @@ public class QuestionDao {
         return objR;
     }
     
-    public Question readRandomQuestion() {
+    public Question readRandomQuestion(int level) {
         Question randomQuestion = null;
-        String sql = "SELECT * FROM question";
+        String sql = "SELECT * FROM question WHERE niveau = ?";
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
         try {
-            pstmt = connection.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql); 
+            pstmt.setInt(1, level);  
             rs = pstmt.executeQuery();
-
+            
             List<Question> questionList = new ArrayList<>();
 
             // Récupérer toutes les questions de la base de données

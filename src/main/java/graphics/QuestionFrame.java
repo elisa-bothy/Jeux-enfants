@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.text.Normalizer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,7 +25,7 @@ import javax.swing.border.Border;
  *
  * @author Valentina Sarais
  */
-public class QuestionFrame extends JPanel {
+public final class QuestionFrame extends JPanel {
 
     private static final long serialVersionUID = 1L;
     JPanel questRepPanel, btnPanel;
@@ -33,8 +34,9 @@ public class QuestionFrame extends JPanel {
     JButton verif, solut, autreQuest;
     QuestionDao questRandom;
     Question reponseUSer;
+    int level;
 
-    public QuestionFrame() {
+    public QuestionFrame(AdministrationFrame af) {
 
         questRandom = new QuestionDao();
         //creation des composants
@@ -93,8 +95,12 @@ public class QuestionFrame extends JPanel {
         add(questRepPanel, BorderLayout.NORTH);
         add(btnPanel, BorderLayout.SOUTH);
         
+        //initialise le level
+        level = 1;
+        
+        changeRadios(af);
         this.initGui();
-        this.afficherQuestRandom();
+        this.afficherQuestRandom(level);
         this.initEvents();
     }
 
@@ -119,17 +125,17 @@ public class QuestionFrame extends JPanel {
 
         autreQuest.addActionListener((ActionEvent e) -> {
             repText.setText("");
-            afficherQuestRandom();
+            afficherQuestRandom(level);
         });
 
     }
 
-    private void afficherQuestRandom() {
-        // Appel à la méthode pour récupérer une question aléatoire depuis la base de données
-        Question question = questRandom.readRandomQuestion();
+    private void afficherQuestRandom(int level) {
+            // Appel à la méthode pour récupérer une question aléatoire depuis la base de données
+            Question question = questRandom.readRandomQuestion(level);
 
-        // Mise à jour du libellé avec la question aléatoire obtenue
-        questLabel.setText(question.getEnonce());
+            // Mise à jour du libellé avec la question aléatoire obtenue
+            questLabel.setText(question.getEnonce());
     }
 
     private void verifierReponse() {
@@ -174,5 +180,21 @@ public class QuestionFrame extends JPanel {
         } else {
             Popup.afficherMessage("Impossible de récupérer la réponse correcte.", "Erreur", HEIGHT);
         }
+    }
+    public void changeRadios(AdministrationFrame af) {
+         af.jrb1.setSelected(true); // Sélectionnez le premier bouton radio pour déclencher l'événement
+         af.jrb1.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                level = 1;
+                afficherQuestRandom(level);
+            }
+        });
+
+        af.jrb2.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                level = 2;
+                afficherQuestRandom(level);
+            }
+        });
     }
 }

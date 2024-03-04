@@ -53,11 +53,11 @@ public class Game extends JFrame implements ActionListener {
         super("Jouons avec Herbie !");
         this.setIconImage(herbert.getImage()); 
         south = new JPanel();
-        jpAccueil = new AccueilFrame();
-        jpCalcul = new CalculFrame();
-        jpQuestion = new QuestionFrame();
-        jpTabGraphique = new ArdoiseFrame();
         jpAdministration = new AdministrationFrame();
+        jpAccueil = new AccueilFrame();
+        jpCalcul = new CalculFrame(jpAdministration);
+        jpQuestion = new QuestionFrame(jpAdministration);
+        jpTabGraphique = new ArdoiseFrame();
         connexion = new JButton("Connectez vous");
 
         //ajout du menu
