@@ -172,7 +172,7 @@ public class AdministrationFrame extends JPanel {
             retour.setVisible(false);
             int selectedIndex = jcb.getSelectedIndex();
             System.out.println("numquestion" + selectedIndex);
-            qdao.delete(selectedIndex);
+            qdao.delete(selectedIndex+1);
             question.setText("");
             reponse.setText("");
         });
