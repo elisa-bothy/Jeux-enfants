@@ -8,6 +8,8 @@ import entities.Calcul;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -56,6 +58,33 @@ public class CalculFrame extends JPanel {
         res.getJbautre().addActionListener((ae) -> {
             getLabel();
             res.getJtreponse().setText("");
+        });
+        res.getJtreponse().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent ke) {}
+
+            @Override
+            public void keyReleased(KeyEvent ke) {
+                String text = res.getJtreponse().getText();
+                boolean containsNonDigit = false;
+
+                // Parcourt chaque caractère du texte
+                for (char ch : text.toCharArray()) {
+                    // Vérifie si le caractère n'est pas un chiffre
+                    if (!Character.isDigit(ch)) {
+                        containsNonDigit = true;
+                        break;
+                    }
+                }
+
+                // Si la chaîne contient au moins un caractère non numérique, effacez le texte
+                if (containsNonDigit) {
+                    res.getJtreponse().setText("");
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent ke) {}
         });
         
         res.getJbverification().addActionListener((ae) -> {
@@ -112,7 +141,7 @@ public class CalculFrame extends JPanel {
     private boolean comparaison() {
         int solution;
         int proposition;
-        
+                
         solution = Integer.parseInt(res.getJlsolution().getText().trim());
         proposition = Integer.parseInt(res.getJtreponse().getText().trim());
         
