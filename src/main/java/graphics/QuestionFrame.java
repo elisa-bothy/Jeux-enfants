@@ -137,7 +137,7 @@ public class QuestionFrame extends JPanel {
         String reponseUtilisateur = removeAccents(repText.getText());
 
         // Récup question actuelle affichée dans le label
-        String enonceQuestion = removeAccents(questLabel.getText());
+        String enonceQuestion = questLabel.getText();
 
         // Récupérer la question correspondant à l'énoncé depuis la base de données
         Question question = questRandom.getQuestionByEnonce(enonceQuestion);
