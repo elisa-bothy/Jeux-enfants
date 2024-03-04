@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.text.Normalizer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -133,10 +134,10 @@ public class QuestionFrame extends JPanel {
 
     private void verifierReponse() {
         //recup la réponse saisie par l'utilisateur
-        String reponseUtilisateur = repText.getText();
+        String reponseUtilisateur = removeAccents(repText.getText());
 
         // Récup question actuelle affichée dans le label
-        String enonceQuestion = questLabel.getText();
+        String enonceQuestion = removeAccents(questLabel.getText());
 
         // Récupérer la question correspondant à l'énoncé depuis la base de données
         Question question = questRandom.getQuestionByEnonce(enonceQuestion);
@@ -151,6 +152,12 @@ public class QuestionFrame extends JPanel {
         } else {
             Popup.afficherMessage("Mauvaise réponse !", "Vérification", HEIGHT);
         }
+    }
+    
+    private String removeAccents(String input) {
+        // Remplace les caractères accentués par leurs équivalents non accentués
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        return normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 
     private void afficherSolution() {
