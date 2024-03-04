@@ -139,13 +139,23 @@ public class CalculFrame extends JPanel {
 
     // Fonction de comparaison 
     private boolean comparaison() {
-        int solution;
-        int proposition;
-                
-        solution = Integer.parseInt(res.getJlsolution().getText().trim());
-        proposition = Integer.parseInt(res.getJtreponse().getText().trim());
-        
-        return solution == proposition;
+        try {
+            String solutionText = res.getJlsolution().getText().trim();
+            String propositionText = res.getJtreponse().getText().trim();
+
+            // Vérifier si la solution est vide
+            if (solutionText.isEmpty()) {
+                return false;
+            }
+
+            int solution = Integer.parseInt(solutionText);
+            int proposition = Integer.parseInt(propositionText);
+
+            return solution == proposition;
+        } catch (NumberFormatException e) {
+            // Gérer l'exception si les chaînes ne peuvent pas être converties en entiers
+            return false;
+        }
     }
     
 }
