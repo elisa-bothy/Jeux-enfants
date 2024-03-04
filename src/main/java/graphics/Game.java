@@ -347,8 +347,8 @@ public class Game extends JFrame implements ActionListener {
             tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 176)));
             break;
         case 1:
-            selectedTabColor = new Color(111, 183, 214);
-            tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(111, 183, 214)));
+            selectedTabColor = new Color(204, 236, 239);
+            tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(204, 236, 239)));
             break;
         case 2:
             selectedTabColor = new Color(254, 235, 201);
