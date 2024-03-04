@@ -6,6 +6,7 @@ package graphics;
 
 import dao.QuestionDao;
 import entities.Question;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -44,11 +45,21 @@ public class AdministrationFrame extends JPanel {
     Collection<Question> questionList;
     int nbQuestion;
     String[] questionStatements;
+    JPanel north;
+    JPanel south;
+    JPanel east;
+    JPanel west;
+    JPanel center;
 
     public AdministrationFrame() {
         welcome = new JLabel();
         // Boutons radio
         radios = new JPanel();
+        north = new JPanel();
+        south = new JPanel();
+        east = new JPanel();
+        west = new JPanel();
+        center = new JPanel();
         jrb1 = new JRadioButton("niveau 1");
         jrb2 = new JRadioButton("niveau 2");
         niveaux = new ButtonGroup();
@@ -86,22 +97,28 @@ public class AdministrationFrame extends JPanel {
     }
 
     private void initGui() {
+        this.setLayout(new BorderLayout());
         niveaux.add(jrb1);
         niveaux.add(jrb2);
         radios.add(jrb1);
         radios.add(jrb2);
-        this.add(radios);
-        this.add(modification);
-        this.add(creation);
-        this.add(jcb);
-        question.setPreferredSize(new Dimension(600, 30));
-        this.add(question);
         reponse.setPreferredSize(new Dimension(600, 30));
-        this.add(reponse);
-        this.add(enregistrer);
-        this.add(supprimer);
-        this.add(modifier);
-        this.add(retour);
+        question.setPreferredSize(new Dimension(600, 30));
+        south.add(radios);
+        center.add(modification);
+        west.add(jcb);
+        center.add(creation);
+        center.add(question);
+        center.add(reponse);
+        north.add(enregistrer);
+        north.add(supprimer);
+        north.add(modifier);
+        north.add(retour);
+        this.add(south, BorderLayout.SOUTH);
+        this.add(west, BorderLayout.WEST);
+        this.add(east, BorderLayout.EAST);
+        this.add(center, BorderLayout.CENTER);
+        this.add(north, BorderLayout.NORTH);
     }
 
     private void initEvents() {
