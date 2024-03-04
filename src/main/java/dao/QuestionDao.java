@@ -257,14 +257,15 @@ public class QuestionDao {
         return objQ;
     }
 
-    public void updateEnonce(Question objQ, String s) {
-        String sql = "UPDATE question SET enonce=? WHERE id_question=?";
+    public void updateEnonce(Question objQ, String s1, String s2) {
+        String sql = "UPDATE question SET enonce=?, reponse=? WHERE id_question=?";
         PreparedStatement pstmt = null;
 
         try {
             pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, s);
-            pstmt.setInt(2, objQ.getId_question());
+            pstmt.setString(1, s1);
+            pstmt.setString(2, s2);
+            pstmt.setInt(3, objQ.getId_question());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             System.err.println("Erreur lors de l'update : " + ex.getMessage());

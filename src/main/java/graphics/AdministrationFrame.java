@@ -136,6 +136,7 @@ public class AdministrationFrame extends JPanel {
             jcb.setVisible(true);
             modifier.setVisible(true);
             question.setVisible(true);
+            reponse.setVisible(true);
             retour.setVisible(true);
         });
         creation.addActionListener((ActionEvent ae) -> {
@@ -157,6 +158,7 @@ public class AdministrationFrame extends JPanel {
             jcb.setVisible(false);
             modifier.setVisible(false);
             question.setVisible(false);
+            reponse.setVisible(false);
             supprimer.setVisible(false);
             question.setText("");
             reponse.setText("");
@@ -168,6 +170,7 @@ public class AdministrationFrame extends JPanel {
             jcb.setVisible(false);
             modifier.setVisible(false);
             question.setVisible(false);
+            reponse.setVisible(false);
             supprimer.setVisible(false);
             retour.setVisible(false);
             int selectedIndex = jcb.getSelectedIndex();
@@ -183,15 +186,16 @@ public class AdministrationFrame extends JPanel {
             jcb.setVisible(false);
             modifier.setVisible(false);
             question.setVisible(false);
+            reponse.setVisible(false);
             supprimer.setVisible(false);
             retour.setVisible(false);
             // Récupérer l'index de la question sélectionnée dans le JComboBox
             int selectedIndex = jcb.getSelectedIndex();
             // Récupérer la question sélectionnée dans le JComboBox
             Question selectedQuestion = questionList.toArray(new Question[0])[selectedIndex];
-            String s = question.getText();
-            System.out.println("enonce" + s);
-            qdao.updateEnonce(selectedQuestion, s);
+            String questionEnonce = question.getText();
+            String questionReponse = reponse.getText();
+            qdao.updateEnonce(selectedQuestion, questionEnonce, questionReponse);
             question.setText("");
             reponse.setText("");
         });
@@ -205,8 +209,6 @@ public class AdministrationFrame extends JPanel {
             retour.setVisible(false);
             String questionEnonce = question.getText();
             String questionReponse = reponse.getText();
-            System.out.println("enonce" + questionEnonce);
-            System.out.println("reponse" + questionReponse);
             qdao.create(questionEnonce, questionReponse);
             question.setText("");
             reponse.setText("");
