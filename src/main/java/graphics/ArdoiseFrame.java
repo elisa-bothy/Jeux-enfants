@@ -21,6 +21,7 @@ public class ArdoiseFrame extends JPanel {
 
     JPanel dessin;
     JPanel colorPanel;
+    ButtonChooseColor btncc;
     JButton clearButton;
     Color currentColor = Color.BLACK; // Couleur actuelle pour dessiner
 
@@ -28,7 +29,8 @@ public class ArdoiseFrame extends JPanel {
 
         dessin = new JPanel();
         colorPanel = new JPanel();
-        clearButton = new JButton(new ImageIcon("limpar-limpo.png"));//icone du bouton clear
+        btncc = new ButtonChooseColor(this);
+        clearButton = new JButton(new ImageIcon(Game.class.getResource("/images/limpar-limpo.png")));//icone du bouton clear
 
         // param pour dessiner
         dessin.setBackground(Color.white);
@@ -58,6 +60,8 @@ public class ArdoiseFrame extends JPanel {
         colorPanel.add(createColorButton(Color.YELLOW));
         colorPanel.add(createColorButton(Color.BLACK));
         colorPanel.add(createColorButton(Color.GRAY));
+        btncc.setPreferredSize(new Dimension(50, 300));
+        colorPanel.add(btncc);
 
         // position des éléments
         this.setLayout(new BorderLayout());
@@ -90,5 +94,21 @@ public class ArdoiseFrame extends JPanel {
             }
         });
         return button;
+    }
+
+    /**
+     *
+     * @return la couleur actuelle
+     */
+    public Color getCurrentColor() {
+        return currentColor;
+    }
+
+    /**
+     *
+     * @param currentColor la couleur actuelle
+     */
+    public void setCurrentColor(Color currentColor) {
+        this.currentColor = currentColor;
     }
 }

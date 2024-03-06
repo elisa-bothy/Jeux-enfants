@@ -114,6 +114,7 @@ public final class CalculFrame extends JPanel {
     // FONCTION SUPPORT ----------------------------------------------------        
     // Fonction générant les labels jlsolution et equation 
     private void getLabel(int level) {
+        System.out.println("level = " + level);
         // EQUATION     
         Calcul alea = new Calcul();
         // genère 2 nombre aléatoire 
@@ -188,6 +189,7 @@ public final class CalculFrame extends JPanel {
          af.jrb1.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 level = 1;
+                setLevel(level);
                 getLabel(level);
             }
         });
@@ -195,8 +197,14 @@ public final class CalculFrame extends JPanel {
         af.jrb2.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 level = 2;
+                setLevel(level);
                 getLabel(level);
             }
         });
+    }
+
+    private void setLevel(int l) {
+        level = l;
+        getLabel(level);
     }
 }
