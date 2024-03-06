@@ -32,6 +32,8 @@ public class AccueilFrame extends JPanel {
 
     private void initGui() {
         text = "<html>Bienvenue cher enfant ! <br>"
+                + "Je suis Herbie, je suis là pour t'aider <br>"
+                + "N'hésite pas à cliquer sur ctrl + N ! <br>"
                 + "Prépare toi à vivre de grandes aventures ! <br>"
                 + "Clique en haut sur l'onglet qui t'intéresses <br>"
                 + "et surtout AMUSE-TOI !</html>";

@@ -7,7 +7,6 @@ package graphics;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
-import graphics.ArdoiseFrame;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -25,6 +24,8 @@ public class ButtonChooseColor extends JButton {
     private static final long serialVersionUID = 1L;
     private ArdoiseFrame ardoiseFrame;
     ImageIcon gradient;
+    private boolean imageVisible = true;
+    
     public ButtonChooseColor(ArdoiseFrame ardoiseFrame) {
         this.gradient = new ImageIcon(Game.class.getResource("/images/gradient.png"));
         
@@ -38,20 +39,37 @@ public class ButtonChooseColor extends JButton {
                 if(couleur != null){
                     setBackground(couleur);
                     ardoiseFrame.setCurrentColor(couleur); // Change couleur crayon
-                    setIcon(null); // Rend l'image nulle
+                    hideImage();
+                }else{
+                    showImage();
                 }
             }
+
+            
         });
     }
+    
+    public void hideImage() {
+        imageVisible = false;
+        repaint(); // pour que l'image soit invisible et qu'on puisse voir la couleur choisie
+    }
+    
+    public void showImage() {
+        imageVisible = true;
+        repaint(); // pour que l'image soit invisible et qu'on puisse voir la couleur choisie
+    }
+    
     
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create();
-        // Dessiner l'image à la taille du bouton
-        Image scaledImage = gradient.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        scaledIcon.paintIcon(this, g2, 0, 0);
-        g2.dispose();
+        if (imageVisible) { 
+            Graphics2D g2 = (Graphics2D) g.create();
+            // Dessiner l'image à la taille du bouton
+            Image scaledImage = gradient.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            scaledIcon.paintIcon(this, g2, 0, 0);
+            g2.dispose();
+        }
     }
 }
