@@ -25,45 +25,43 @@ public class ButtonChooseColor extends JButton {
     private ArdoiseFrame ardoiseFrame;
     ImageIcon gradient;
     private boolean imageVisible = true;
-    
+
     public ButtonChooseColor(ArdoiseFrame ardoiseFrame) {
         this.gradient = new ImageIcon(Game.class.getResource("/images/gradient.png"));
-        
+
         this.ardoiseFrame = ardoiseFrame;
         this.setPreferredSize(new Dimension(50, 300));
         this.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 Color init = Color.WHITE;
-                Color couleur = JColorChooser.showDialog(null,"Choisissez une couleur", init);
-                if(couleur != null){
+                Color couleur = JColorChooser.showDialog(null, "Choisissez une couleur", init);
+                if (couleur != null) {
                     setBackground(couleur);
                     ardoiseFrame.setCurrentColor(couleur); // Change couleur crayon
                     hideImage();
-                }else{
+                } else {
                     showImage();
                 }
             }
-
-            
         });
     }
-    
+
     public void hideImage() {
         imageVisible = false;
         repaint(); // pour que l'image soit invisible et qu'on puisse voir la couleur choisie
     }
-    
+
     public void showImage() {
         imageVisible = true;
         repaint(); // pour que l'image soit invisible et qu'on puisse voir la couleur choisie
     }
-    
-    
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (imageVisible) { 
+        if (imageVisible) {
             Graphics2D g2 = (Graphics2D) g.create();
             // Dessiner l'image à la taille du bouton
             Image scaledImage = gradient.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
