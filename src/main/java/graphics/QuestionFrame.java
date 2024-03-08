@@ -34,9 +34,8 @@ public final class QuestionFrame extends JPanel {
     JButton verif, solut, autreQuest;
     QuestionDao questRandom;
     Question reponseUSer;
-    int level;
 
-    public QuestionFrame(AdministrationFrame af) {
+    public QuestionFrame(Game game) {
 
         questRandom = new QuestionDao();
         //creation des composants
@@ -85,23 +84,14 @@ public final class QuestionFrame extends JPanel {
 
         // positionner les composants
         setLayout(new BorderLayout());
-        
+
         //ajout de couleurs
         questRepPanel.setBackground(new Color(181, 225, 174));
         btnPanel.setBackground(new Color(181, 225, 174));
         this.setBackground(new Color(181, 225, 174));
-        
-        // Ajout des panneaux à la frame
-        add(questRepPanel, BorderLayout.NORTH);
-        add(btnPanel, BorderLayout.SOUTH);
-        
-        //initialise le level
-        level = 1;
-        
-        changeRadios(af);
+
         this.initGui();
-        this.afficherQuestRandom(level);
-        this.initEvents();
+        this.initEvents(game);
     }
 
     private void initGui() {
@@ -113,7 +103,7 @@ public final class QuestionFrame extends JPanel {
         this.add(btnPanel, BorderLayout.SOUTH);
     }
 
-    private void initEvents() {
+    private void initEvents(Game game) {
         // Ajout de l'écouteur pour le bouton de vérification
         verif.addActionListener((ActionEvent e) -> {
             verifierReponse();
@@ -125,17 +115,16 @@ public final class QuestionFrame extends JPanel {
 
         autreQuest.addActionListener((ActionEvent e) -> {
             repText.setText("");
-            afficherQuestRandom(level);
+            afficherQuestRandom(game);
         });
-
     }
 
-    private void afficherQuestRandom(int level) {
-            // Appel à la méthode pour récupérer une question aléatoire depuis la base de données
-            Question question = questRandom.readRandomQuestion(level);
+    private void afficherQuestRandom(Game game) {
+        // Appel à la méthode pour récupérer une question aléatoire depuis la base de données
+        Question question = questRandom.readRandomQuestion(game.getLevel());
 
-            // Mise à jour du libellé avec la question aléatoire obtenue
-            questLabel.setText(question.getEnonce());
+        // Mise à jour du libellé avec la question aléatoire obtenue
+        questLabel.setText(question.getEnonce());
     }
 
     private void verifierReponse() {
@@ -159,7 +148,7 @@ public final class QuestionFrame extends JPanel {
             Popup.afficherMessage("Mauvaise réponse !", "Vérification", HEIGHT);
         }
     }
-    
+
     private String removeAccents(String input) {
         // Remplace les caractères accentués par leurs équivalents non accentués
         String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
@@ -180,21 +169,5 @@ public final class QuestionFrame extends JPanel {
         } else {
             Popup.afficherMessage("Impossible de récupérer la réponse correcte.", "Erreur", HEIGHT);
         }
-    }
-    public void changeRadios(AdministrationFrame af) {
-         af.jrb1.setSelected(true); // Sélectionnez le premier bouton radio pour déclencher l'événement
-         af.jrb1.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                level = 1;
-                afficherQuestRandom(level);
-            }
-        });
-
-        af.jrb2.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                level = 2;
-                afficherQuestRandom(level);
-            }
-        });
     }
 }

@@ -28,6 +28,7 @@ public class AccueilFrame extends JPanel {
         jl = new JLabel();
         icon = new JLabel();
         initGui();
+        initEvents();
     }
 
     private void initGui() {
@@ -47,6 +48,9 @@ public class AccueilFrame extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(jl, BorderLayout.EAST);
         this.add(icon, BorderLayout.WEST);
+    }
+
+    private void initEvents() {
     }
 
 }

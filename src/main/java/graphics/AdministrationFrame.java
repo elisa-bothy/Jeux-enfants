@@ -50,7 +50,6 @@ public class AdministrationFrame extends JPanel {
     JPanel east;
     JPanel west;
     JPanel center;
-    private int level;
 
     public AdministrationFrame() {
         welcome = new JLabel();
@@ -123,6 +122,35 @@ public class AdministrationFrame extends JPanel {
     }
 
     private void initEvents() {
+        onClick();
+        modification.addActionListener((ActionEvent ae) -> {
+            modificationOnClick();
+        });
+        creation.addActionListener((ActionEvent ae) -> {
+            creationOnClick();
+        });
+        retour.addActionListener((ActionEvent ae) -> {
+            retourOnClick();
+        });
+        supprimer.addActionListener((ActionEvent ae) -> {
+            supprimerOnClick();
+        });
+        modifier.addActionListener((ActionEvent ae) -> {
+            modifierOnClick();
+            modificationQuestion();
+        });
+        enregistrer.addActionListener((ActionEvent ae) -> {
+            enregistrerOnClick();
+            enregistrementQuestion();
+        });
+        jcb.addItemListener((e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                supprimer.setVisible(true);
+            }
+        });
+    }
+
+    private void onClick() {
         jcb.setVisible(false);
         question.setVisible(false);
         enregistrer.setVisible(false);
@@ -130,93 +158,100 @@ public class AdministrationFrame extends JPanel {
         reponse.setVisible(false);
         supprimer.setVisible(false);
         retour.setVisible(false);
-        modification.addActionListener((ActionEvent ae) -> {
-            radios.setVisible(false);
-            modification.setVisible(false);
-            creation.setVisible(false);
-            jcb.setVisible(true);
-            modifier.setVisible(true);
-            question.setVisible(true);
-            reponse.setVisible(true);
-            retour.setVisible(true);
-        });
-        creation.addActionListener((ActionEvent ae) -> {
-            radios.setVisible(false);
-            modification.setVisible(false);
-            creation.setVisible(false);
-            enregistrer.setVisible(true);
-            question.setVisible(true);
-            reponse.setVisible(true);
-            retour.setVisible(true);
-        });
-        retour.addActionListener((ActionEvent ae) -> {
-            enregistrer.setVisible(false);
-            reponse.setVisible(false);
-            retour.setVisible(false);
-            radios.setVisible(true);
-            modification.setVisible(true);
-            creation.setVisible(true);
-            jcb.setVisible(false);
-            modifier.setVisible(false);
-            question.setVisible(false);
-            reponse.setVisible(false);
-            supprimer.setVisible(false);
-            question.setText("");
-            reponse.setText("");
-        });
-        supprimer.addActionListener((ActionEvent ae) -> {
-            radios.setVisible(true);
-            modification.setVisible(true);
-            creation.setVisible(true);
-            jcb.setVisible(false);
-            modifier.setVisible(false);
-            question.setVisible(false);
-            reponse.setVisible(false);
-            supprimer.setVisible(false);
-            retour.setVisible(false);
-            int selectedIndex = jcb.getSelectedIndex();
-            qdao.delete(selectedIndex+1);
-            question.setText("");
-            reponse.setText("");
-        });
-        modifier.addActionListener((ActionEvent ae) -> {
-            radios.setVisible(true);
-            modification.setVisible(true);
-            creation.setVisible(true);
-            jcb.setVisible(false);
-            modifier.setVisible(false);
-            question.setVisible(false);
-            reponse.setVisible(false);
-            supprimer.setVisible(false);
-            retour.setVisible(false);
-            // Récupérer l'index de la question sélectionnée dans le JComboBox
-            int selectedIndex = jcb.getSelectedIndex();
-            // Récupérer la question sélectionnée dans le JComboBox
-            Question selectedQuestion = questionList.toArray(new Question[0])[selectedIndex];
-            String questionEnonce = question.getText();
-            String questionReponse = reponse.getText();
-            qdao.updateEnonce(selectedQuestion, questionEnonce, questionReponse);
-            question.setText("");
-            reponse.setText("");
-        });
-        enregistrer.addActionListener((ActionEvent ae) -> {
-            radios.setVisible(true);
-            modification.setVisible(true);
-            creation.setVisible(true);
-            enregistrer.setVisible(false);
-            question.setVisible(false);
-            reponse.setVisible(false);
-            retour.setVisible(false);
-            String questionEnonce = question.getText();
-            String questionReponse = reponse.getText();
-            qdao.create(questionEnonce, questionReponse);
-            question.setText("");
-            reponse.setText("");
-        });
-        jcb.addItemListener((e) -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                supprimer.setVisible(true);
-            }
-        });
+    }
+
+    private void modificationOnClick() {
+        radios.setVisible(false);
+        modification.setVisible(false);
+        creation.setVisible(false);
+        jcb.setVisible(true);
+        modifier.setVisible(true);
+        question.setVisible(true);
+        reponse.setVisible(true);
+        retour.setVisible(true);
+    }
+
+    private void creationOnClick() {
+        radios.setVisible(false);
+        modification.setVisible(false);
+        creation.setVisible(false);
+        enregistrer.setVisible(true);
+        question.setVisible(true);
+        reponse.setVisible(true);
+        retour.setVisible(true);
+    }
+
+    private void retourOnClick() {
+        enregistrer.setVisible(false);
+        reponse.setVisible(false);
+        retour.setVisible(false);
+        radios.setVisible(true);
+        modification.setVisible(true);
+        creation.setVisible(true);
+        jcb.setVisible(false);
+        modifier.setVisible(false);
+        question.setVisible(false);
+        reponse.setVisible(false);
+        supprimer.setVisible(false);
+        question.setText("");
+        reponse.setText("");
+    }
+
+    private void supprimerOnClick() {
+        radios.setVisible(true);
+        modification.setVisible(true);
+        creation.setVisible(true);
+        jcb.setVisible(false);
+        modifier.setVisible(false);
+        question.setVisible(false);
+        reponse.setVisible(false);
+        supprimer.setVisible(false);
+        retour.setVisible(false);
+        int selectedIndex = jcb.getSelectedIndex();
+        qdao.delete(selectedIndex + 1);
+        question.setText("");
+        reponse.setText("");
+    }
+
+    private void modifierOnClick() {
+        radios.setVisible(true);
+        modification.setVisible(true);
+        creation.setVisible(true);
+        jcb.setVisible(false);
+        modifier.setVisible(false);
+        question.setVisible(false);
+        reponse.setVisible(false);
+        supprimer.setVisible(false);
+        retour.setVisible(false);
+        question.setText("");
+        reponse.setText("");
+    }
+
+    private void modificationQuestion() {
+        // Récupérer l'index de la question sélectionnée dans le JComboBox
+        int selectedIndex = jcb.getSelectedIndex();
+        // Récupérer la question sélectionnée dans le JComboBox
+        Question selectedQuestion = questionList.toArray(new Question[0])[selectedIndex];
+        String questionEnonce = question.getText();
+        String questionReponse = reponse.getText();
+        qdao.updateEnonce(selectedQuestion, questionEnonce, questionReponse);
+    }
+
+    private void enregistrerOnClick() {
+        radios.setVisible(true);
+        modification.setVisible(true);
+        creation.setVisible(true);
+        enregistrer.setVisible(false);
+        question.setVisible(false);
+        reponse.setVisible(false);
+        retour.setVisible(false);
+        question.setText("");
+        reponse.setText("");
+    }
+
+    private void enregistrementQuestion() {
+        String questionEnonce = question.getText();
+        String questionReponse = reponse.getText();
+        qdao.create(questionEnonce, questionReponse);
     }
 }

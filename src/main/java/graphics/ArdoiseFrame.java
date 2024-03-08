@@ -1,9 +1,12 @@
 package graphics;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -34,17 +37,17 @@ public class ArdoiseFrame extends JPanel {
         colorPanel = new JPanel();
         btncc = new ButtonChooseColor(this);
         clearPanel = new JPanel();
-        
+
         clearButton = new JButton(new ImageIcon(Game.class.getResource("/images/limpar-limpo.png")));//icone du bouton clear
         eraserButton = new JButton(new ImageIcon(Game.class.getResource("/images/eraser2.png")));
         changePanelButton = new JButton(new ImageIcon(Game.class.getResource("/images/blackWhite.png")));
-        
+
         initGui();
-        initEvent();
+        initEvents();
     }
-    
+
     private void initGui() {
-         // Config Panel de couleur
+        // Config Panel de couleur
         colorPanel.setLayout(new BoxLayout(colorPanel, BoxLayout.Y_AXIS));
         colorPanel.add(createColorButton(Color.RED));
         colorPanel.add(createColorButton(Color.GREEN));
@@ -54,7 +57,7 @@ public class ArdoiseFrame extends JPanel {
         colorPanel.add(createColorButton(Color.GRAY));
         btncc.setPreferredSize(new Dimension(50, 300));
         colorPanel.add(btncc);
-        
+
         // Config boutton pour effacer
         changePanelButton.setPreferredSize(new Dimension(50, 175));
         eraserButton.setPreferredSize(new Dimension(50, 75));
@@ -71,35 +74,20 @@ public class ArdoiseFrame extends JPanel {
         this.add(dessin, BorderLayout.CENTER);
     }
 
-    private void initEvent() {
+    private void initEvents() {
         // param pour dessiner
         dessin.setBackground(Color.white);
-        dessin.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                x = e.getX();
-                y = e.getY();
-            }
-        });
-        dessin.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                Graphics g = dessin.getGraphics();
-                g.setColor(currentColor); // Définit la couleur actuelle
-                g.drawLine(x, y, e.getX(), e.getY());
-                x = e.getX();
-                y = e.getY();
-            }
-        });
+
+        dessiner();
 
         changePanelButton.addActionListener((ActionEvent e) -> {
             changeDessinBackground();
         });
-        
+
         eraserButton.addActionListener((ActionEvent e) -> {
             eraseDrawing();
         });
-        
+
         // Ajoute un ActionListener au bouton Effacer
         clearButton.addActionListener((ActionEvent e) -> {
             clearDrawing();
@@ -108,9 +96,9 @@ public class ArdoiseFrame extends JPanel {
 
     // Pour effacer le dessin
     private void clearDrawing() {
-        Graphics g = dessin.getGraphics();
-        g.setColor(dessin.getBackground());
-        g.fillRect(0, 0, dessin.getWidth(), dessin.getHeight());
+            Graphics g = dessin.getGraphics();
+            g.setColor(dessin.getBackground());
+            g.fillRect(0, 0, dessin.getWidth(), dessin.getHeight());
     }
 
     // Boutons de couleur
@@ -129,7 +117,7 @@ public class ArdoiseFrame extends JPanel {
 
     /**
      *
-     * @return la couleur actuelle
+     * @return la couleur actuelle du dessin
      */
     public Color getCurrentColor() {
         return currentColor;
@@ -137,27 +125,57 @@ public class ArdoiseFrame extends JPanel {
 
     /**
      *
-     * @param currentColor la couleur actuelle
+     * @param currentColor la couleur actuelle du dessin
      */
     public void setCurrentColor(Color currentColor) {
         this.currentColor = currentColor;
     }
 
     private void eraseDrawing() {
-        if(dessin.getBackground().equals(Color.WHITE)){
+        if (dessin.getBackground().equals(Color.WHITE)) {
             setCurrentColor(Color.WHITE);
-        }else{
+        } else {
             setCurrentColor(Color.BLACK);
         }
     }
 
     private void changeDessinBackground() {
-        if(dessin.getBackground().equals(Color.WHITE)){
+        if (dessin.getBackground().equals(Color.WHITE)) {
             dessin.setBackground(Color.BLACK);
             setCurrentColor(Color.WHITE);
-        }else{
+        } else {
             dessin.setBackground(Color.WHITE);
             setCurrentColor(Color.BLACK);
         }
     }
+
+    private void dessiner() {
+        dessin.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                x = e.getX();
+                y = e.getY();
+            }
+        });
+        dessin.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                Graphics g = dessin.getGraphics();
+                g.setColor(currentColor); // Définit la couleur actuelle
+                Graphics2D g2 = (Graphics2D)g;
+                
+                if(currentColor == dessin.getBackground()){
+                    // trait épais
+                    g2.setStroke(new BasicStroke(10));
+                }else{
+                    // trait "normal"
+                    g2.setStroke(new BasicStroke(1)); 
+                }   
+                g2.drawLine(x, y, e.getX(), e.getY());
+                x = e.getX();
+                y = e.getY(); 
+            }
+        });
+    }
+
 }

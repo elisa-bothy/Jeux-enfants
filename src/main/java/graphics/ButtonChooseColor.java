@@ -27,25 +27,8 @@ public class ButtonChooseColor extends JButton {
     private boolean imageVisible = true;
 
     public ButtonChooseColor(ArdoiseFrame ardoiseFrame) {
-        this.gradient = new ImageIcon(Game.class.getResource("/images/gradient.png"));
-
-        this.ardoiseFrame = ardoiseFrame;
-        this.setPreferredSize(new Dimension(50, 300));
-        this.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Color init = Color.WHITE;
-                Color couleur = JColorChooser.showDialog(null, "Choisissez une couleur", init);
-                if (couleur != null) {
-                    setBackground(couleur);
-                    ardoiseFrame.setCurrentColor(couleur); // Change couleur crayon
-                    hideImage();
-                } else {
-                    showImage();
-                }
-            }
-        });
+        initGui(ardoiseFrame);
+        initEvents();
     }
 
     public void hideImage() {
@@ -69,5 +52,28 @@ public class ButtonChooseColor extends JButton {
             scaledIcon.paintIcon(this, g2, 0, 0);
             g2.dispose();
         }
+    }
+
+    private void initGui(ArdoiseFrame ardoiseFrame) {
+        this.gradient = new ImageIcon(Game.class.getResource("/images/gradient.png"));
+        this.ardoiseFrame = ardoiseFrame;
+        this.setPreferredSize(new Dimension(50, 300));
+    }
+
+    private void initEvents() {
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Color init = Color.WHITE;
+                Color couleur = JColorChooser.showDialog(null, "Choisissez une couleur", init);
+                if (couleur != null) {
+                    setBackground(couleur);
+                    ardoiseFrame.setCurrentColor(couleur); // Change couleur crayon
+                    hideImage();
+                } else {
+                    showImage();
+                }
+            }
+        });
     }
 }

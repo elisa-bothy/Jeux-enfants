@@ -8,7 +8,6 @@ import entities.Calcul;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JOptionPane;
@@ -19,23 +18,19 @@ import javax.swing.JPanel;
  * @author Le J c'est le S
  */
 public final class CalculFrame extends JPanel {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private final CalculPanel calcul;
     private final ResultatPanel res;
-    int level = 1;
 
     // CREATION DE LA FENETRE --------------------------------------------------
-    public CalculFrame(AdministrationFrame af) {
+    public CalculFrame(Game game) {
 
         // Ajouter les panels secondaires 
         calcul = new CalculPanel();
         res = new ResultatPanel();
-        
-        //prend en charge le changement de niveau
-        changeRadios(af);
-        
+
         // Ajout de couleurs
         calcul.setBackground(new Color(254, 235, 201));
         res.setBackground(new Color(254, 235, 201));
@@ -43,11 +38,10 @@ public final class CalculFrame extends JPanel {
         this.add(calcul);
         this.add(res);
         this.setBackground(new Color(254, 235, 201));
-        
+
         // Ajuster les blocs entre eux 
         initGui();
-        events(level);
-        
+        initEvents(game);
     } // -----------------------------------------------------------------------
 
     // RANGER LES BOITES 
@@ -59,14 +53,15 @@ public final class CalculFrame extends JPanel {
     }
 
     // GERER LES EVENTS
-    private void events(int level) {
+    private void initEvents(Game game) {
         res.getJbautre().addActionListener((ae) -> {
-            getLabel(level);
+            getLabel(game);
             res.getJtreponse().setText("");
         });
         res.getJtreponse().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent ke) {}
+            public void keyTyped(KeyEvent ke) {
+            }
 
             @Override
             public void keyReleased(KeyEvent ke) {
@@ -89,71 +84,72 @@ public final class CalculFrame extends JPanel {
             }
 
             @Override
-            public void keyPressed(KeyEvent ke) {}
+            public void keyPressed(KeyEvent ke) {
+            }
         });
-        
+
         res.getJbverification().addActionListener((ae) -> {
             if (comparaison() == true) {
                 Popup.afficherMessage("Bravo Jeune Padawan !", "Vérification", HEIGHT);
             } else {
                 Popup.afficherMessage(
-                        "Ce n'est pas ça, essaie encore !", 
-                        "Vérification", 
+                        "Ce n'est pas ça, essaie encore !",
+                        "Vérification",
                         HEIGHT
                 );
             }
         });
-        
+
         res.getJbsolution().addActionListener((ae) -> {
             String text = "La solution de " + calcul.equation.getText() + " est " + res.getJlsolution().getText();
             Popup.afficherMessage(text, "La solution", JOptionPane.INFORMATION_MESSAGE);
         });
-        
+
     }
 
     // FONCTION SUPPORT ----------------------------------------------------        
     // Fonction générant les labels jlsolution et equation 
-    private void getLabel(int level) {
-        System.out.println("level = " + level);
+    private void getLabel(Game game) {
+        System.out.println("level = " + game.getLevel());
         // EQUATION     
         Calcul alea = new Calcul();
         // genère 2 nombre aléatoire 
-        int a = alea.nombreAleatoire(level);
-        int b = alea.nombreAleatoire(level);
+        int a = alea.nombreAleatoire(game.getLevel());
+        int b = alea.nombreAleatoire(game.getLevel());
         int d = 0;
 
         //genérer l'opérande aléatoire 
-        String operande = alea.operandeAleatoire(level);
+        String operande = alea.operandeAleatoire(game.getLevel());
 
         // genérer une équation aléatoire 
-        if (level==1){
+        if (game.getLevel() == 1) {
             if (operande.equals("+")) {
                 d = a + b;
 
             } else {
                 do {
-                    b = alea.nombreAleatoire(level);
+                    b = alea.nombreAleatoire(game.getLevel());
                 } while (a < b);
                 d = a - b;
             }
-        }else{
-            switch(operande){
-                case "+": 
+        } else {
+            switch (operande) {
+                case "+":
                     d = a + b;
                     break;
-                case "-": 
+                case "-":
                     d = a - b;
                     break;
                 case "x":
                     d = a * b;
                     break;
-                case "/" :
+                case "/":
                     d = a / b;
                     break;
                 default:
                     d = a + b;
                     break;
-            }          
+            }
         }
         String calculation = a + " " + operande + " " + b;
 
@@ -182,29 +178,5 @@ public final class CalculFrame extends JPanel {
             // Gérer l'exception si les chaînes ne peuvent pas être converties en entiers
             return false;
         }
-    }
-    //avoir le level qui se met à jour
-    public void changeRadios(AdministrationFrame af) {
-         af.jrb1.setSelected(true); // Sélectionnez le premier bouton radio pour déclencher l'événement
-         af.jrb1.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                level = 1;
-                setLevel(level);
-                getLabel(level);
-            }
-        });
-
-        af.jrb2.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                level = 2;
-                setLevel(level);
-                getLabel(level);
-            }
-        });
-    }
-
-    private void setLevel(int l) {
-        level = l;
-        getLabel(level);
     }
 }

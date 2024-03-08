@@ -22,15 +22,20 @@ public class CalculPanel extends JPanel {
     JLabel equation;
 
     public CalculPanel() {
+        initGui();
+        initEvents();
+    }
 
+    private void initGui() {
         this.setLayout(new GridLayout(1, 0));
         this.setPreferredSize(new Dimension(400, 500));
-
+        
         equation = new JLabel("1 + 1", JLabel.CENTER);
         equation.setFont(new Font("Bold", Font.BOLD, 50));
         equation.setForeground(new Color(72, 181, 163));
-        add(equation);
-
+        this.add(equation);
     }
+
+    private void initEvents() {}
 
 }

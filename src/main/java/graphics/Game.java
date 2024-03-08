@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -48,15 +49,16 @@ public class Game extends JFrame implements ActionListener {
     QuestionFrame jpQuestion;
     ArdoiseFrame jpTabGraphique;
     AdministrationFrame jpAdministration;//pas visible tant que le code donné n'est pas le bon
+    private int level; //pour le calcul et la question
 
     public Game() {
         super("Jouons avec Herbie !");
-        this.setIconImage(herbert.getImage()); 
+        this.setIconImage(herbert.getImage());
         south = new JPanel();
         jpAdministration = new AdministrationFrame();
         jpAccueil = new AccueilFrame();
-        jpCalcul = new CalculFrame(jpAdministration);
-        jpQuestion = new QuestionFrame(jpAdministration);
+        jpCalcul = new CalculFrame(this);
+        jpQuestion = new QuestionFrame(this);
         jpTabGraphique = new ArdoiseFrame();
         connexion = new JButton("Connectez vous");
 
@@ -77,6 +79,11 @@ public class Game extends JFrame implements ActionListener {
         tabbedPane.addTab("Ardoise magique", jpTabGraphique);
         tabbedPane.addTab("Math'Adore", jpCalcul);
         tabbedPane.addTab("Le Savez vous ?", jpQuestion);
+        
+        changeRadios((int newLevel) -> {
+            setLevel(newLevel);
+            System.out.println("Level changed to: " + level);
+        }); 
 
         String password = lectureCode();
         initGui(); // Créer l'interface graphique
@@ -171,6 +178,9 @@ public class Game extends JFrame implements ActionListener {
     }
 
     private void initEvents(String c) {
+        
+        
+
         bienvenue.addActionListener((ActionEvent ae) -> {
             tabbedPane.setSelectedIndex(0);
         });
@@ -212,70 +222,7 @@ public class Game extends JFrame implements ActionListener {
         });
         needHelp.addActionListener((ActionEvent ae) -> {
             int selectedIndex = tabbedPane.getSelectedIndex();
-            JLabel jl = new JLabel();
-            jl.setForeground(new Color(117, 137, 191));
-            jl.setFont(new Font("Bold", Font.BOLD, 20));
-            switch (selectedIndex) {
-                case 0:
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Vous êtes sur une interface de jeu. Appuyer sur des onglets pour jouer. ",
-                            "Aide",
-                            JOptionPane.INFORMATION_MESSAGE
-                    );
-                    break;
-                case 1:
-                    jl.setText("<html>Pour jouer, petit enfant, tu peux placer le curseur au centre.<br>"
-                            + "Tu peux ensuite choisir la couleur de ton dessin avec les boutons sur la droite, <br>"
-                            + "Et tu peux effacer tout ton dessin avec le  bouton sur la gauche <br>"
-                            + "Amuse-toi bien !</html>");
-                    JOptionPane.showMessageDialog(
-                            null,
-                            jl,
-                            "Aide",
-                            JOptionPane.PLAIN_MESSAGE,
-                            herbert
-                    );
-                    break;
-                case 2:
-                    jl.setText("<html>Pour jouer, petit enfant, tu dois répondre au calcul <br>"
-                            + "Réfléchi bien, puis écrit ta réponse <br>"
-                            + "et appuie sur le bouton Vérification au bas de la page <br>"
-                            + "Si la question est trop dur n'hésite pas à appuyer sur le bouton Solution<br>"
-                            + "Tu peux changer de question à tout moment avec le bouton Nouveau Calcul</html>");
-                    JOptionPane.showMessageDialog(
-                            null,
-                            jl,
-                            "Aide",
-                            JOptionPane.PLAIN_MESSAGE,
-                            herbert
-                    );
-                    break;
-                case 3:
-                    jl.setText("<html>Pour jouer, petit enfant, tu dois répondre à la question de culture <br>"
-                            + "Réfléchi bien, puis écrit ta réponse <br>"
-                            + "et appuie sur le bouton Vérifier au bas de la page <br>"
-                            + "Si la question est trop dur n'hésite pas à appuyer sur le bouton Solution<br>"
-                            + "Tu peux changer de question à tout moment avec le bouton Autre question</html>");
-                    JOptionPane.showMessageDialog(
-                            null,
-                            jl,
-                            "Aide",
-                            JOptionPane.PLAIN_MESSAGE,
-                            herbert
-                    );
-                    break;
-                case 4:
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Onglet Administration, \n"
-                            + "Si vous n'êtes pas un administrateur, \n"
-                            + "Veuillez quitter cet onglet",
-                            "Aide",
-                            JOptionPane.INFORMATION_MESSAGE
-                    );
-                    break;
-            }
+            textHelp(selectedIndex);
         });
         bienvenue.addActionListener((ActionEvent ae) -> {
             tabbedPane.setSelectedIndex(0);
@@ -336,37 +283,134 @@ public class Game extends JFrame implements ActionListener {
         }
         return p;
     }
-    
+
     private void tabbedPaneColor() {
-    int selectedIndex = tabbedPane.getSelectedIndex();
-    Color selectedTabColor = null;
+        int selectedIndex = tabbedPane.getSelectedIndex();
+        Color selectedTabColor = null;
 
-    switch (selectedIndex) {
-        case 0:
-            selectedTabColor = new Color(255, 255, 176);
-            tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 176)));
-            break;
-        case 1:
-            selectedTabColor = new Color(204, 236, 239);
-            tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(204, 236, 239)));
-            break;
-        case 2:
-            selectedTabColor = new Color(254, 235, 201);
-            tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(254, 235, 201)));
-            break;
-        case 3:
-            selectedTabColor = new Color(181, 225, 174);
-            tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(181, 225, 174)));
-            break;
-    }
+        switch (selectedIndex) {
+            case 0:
+                selectedTabColor = new Color(255, 255, 176);
+                tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 176)));
+                break;
+            case 1:
+                selectedTabColor = new Color(204, 236, 239);
+                tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(204, 236, 239)));
+                break;
+            case 2:
+                selectedTabColor = new Color(254, 235, 201);
+                tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(254, 235, 201)));
+                break;
+            case 3:
+                selectedTabColor = new Color(181, 225, 174);
+                tabbedPane.setBorder(BorderFactory.createLineBorder(new Color(181, 225, 174)));
+                break;
+        }
 
-    if (selectedTabColor != null) {
-        //pour définir la couleur de fond de l'onglet sélectionné seulement
-        tabbedPane.setBackgroundAt(selectedIndex, selectedTabColor);
+        if (selectedTabColor != null) {
+            //pour définir la couleur de fond de l'onglet sélectionné seulement
+            tabbedPane.setBackgroundAt(selectedIndex, selectedTabColor);
+        }
     }
-}
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+    }
+
+    private void textHelp(int selectedIndex) {
+        JLabel jl = new JLabel();
+        jl.setForeground(new Color(117, 137, 191));
+        jl.setFont(new Font("Bold", Font.BOLD, 20));
+        switch (selectedIndex) {
+            case 0:
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Vous êtes sur une interface de jeu. Appuyer sur des onglets pour jouer. ",
+                        "Aide",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+                break;
+            case 1:
+                jl.setText("<html>Pour jouer, petit enfant, tu peux placer le curseur au centre.<br>"
+                        + "Tu peux ensuite choisir la couleur de ton dessin avec les boutons sur la droite, <br>"
+                        + "Et tu peux effacer tout ton dessin avec le  bouton sur la gauche <br>"
+                        + "Amuse-toi bien !</html>");
+                JOptionPane.showMessageDialog(
+                        null,
+                        jl,
+                        "Aide",
+                        JOptionPane.PLAIN_MESSAGE,
+                        herbert
+                );
+                break;
+            case 2:
+                jl.setText("<html>Pour jouer, petit enfant, tu dois répondre au calcul <br>"
+                        + "Réfléchi bien, puis écrit ta réponse <br>"
+                        + "et appuie sur le bouton Vérification au bas de la page <br>"
+                        + "Si la question est trop dur n'hésite pas à appuyer sur le bouton Solution<br>"
+                        + "Tu peux changer de question à tout moment avec le bouton Nouveau Calcul</html>");
+                JOptionPane.showMessageDialog(
+                        null,
+                        jl,
+                        "Aide",
+                        JOptionPane.PLAIN_MESSAGE,
+                        herbert
+                );
+                break;
+            case 3:
+                jl.setText("<html>Pour jouer, petit enfant, tu dois répondre à la question de culture <br>"
+                        + "Réfléchi bien, puis écrit ta réponse <br>"
+                        + "et appuie sur le bouton Vérifier au bas de la page <br>"
+                        + "Si la question est trop dur n'hésite pas à appuyer sur le bouton Solution<br>"
+                        + "Tu peux changer de question à tout moment avec le bouton Autre question</html>");
+                JOptionPane.showMessageDialog(
+                        null,
+                        jl,
+                        "Aide",
+                        JOptionPane.PLAIN_MESSAGE,
+                        herbert
+                );
+                break;
+            case 4:
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Onglet Administration, \n"
+                        + "Si vous n'êtes pas un administrateur, \n"
+                        + "Veuillez quitter cet onglet",
+                        "Aide",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+                break;
+        }
+        /**
+         * permet de changer le level des questions
+         */
+
+    }
+
+    private void changeRadios(LevelChangeListener listener) {
+        jpAdministration.jrb1.setSelected(true); // Sélectionnez le premier bouton radio pour déclencher l'événement
+        jpAdministration.jrb1.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                listener.onLevelChanged(1);
+            }
+        });
+
+        jpAdministration.jrb2.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                listener.onLevelChanged(2);
+            }
+        });
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+    interface LevelChangeListener {
+        void onLevelChanged(int newLevel);
     }
 }
