@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,13 +21,18 @@ public class ArdoiseFrame extends JPanel {
 
     int x = 0, y = 0;
 
+    JPanel zoneDessin;
     JPanel dessin;
     JPanel colorPanel;
     JPanel clearPanel;
     ButtonChooseColor btncc;
     JButton clearButton;
     JButton eraserButton;
+    JButton bigDraw;
+    JButton biggerDraw;
+    JButton xxlDraw;
     JButton changePanelButton;
+    JButton save;
     Color currentColor = Color.BLACK; // Couleur actuelle pour dessiner
 
     public ArdoiseFrame() {

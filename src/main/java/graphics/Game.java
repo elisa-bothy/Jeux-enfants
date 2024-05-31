@@ -80,6 +80,9 @@ public class Game extends JFrame implements ActionListener {
         tabbedPane.addTab("Math'Adore", jpCalcul);
         tabbedPane.addTab("Le Savez vous ?", jpQuestion);
         
+        //initialisation du level
+        level = 1;
+        
         changeRadios((int newLevel) -> {
             setLevel(newLevel);
             System.out.println("Level changed to: " + level);
